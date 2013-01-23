@@ -55,11 +55,19 @@ static const Layout layouts[] = {
 static const char *dmenucmd[] = { "dmenu_run", "-fn", font, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbgcolor, "-sf", selfgcolor, NULL };
 static const char *termcmd[]  = { "uxterm", NULL };
 
+// Custom:
+static const char *voldowncmd[]   = { "amixer", "set", "Master", "5%-", NULL };
+static const char *volupcmd[]     = { "amixer", "set", "Master", "5%+", NULL };
+static const char *voltogglecmd[] = { "amixer", "set", "Master", "toggle", NULL };
+static const char *captogglecmd[] = { "amixer", "set", "Capture", "toggle", NULL };
+static const char *pastecmd[]     = { "xdotool", "click", "2", NULL };
+static const char *scrotcmd[]     = { "scrot", "-e", "mv $f ~/screenshots/ 2> /dev/null", NULL };
+
 static Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
 	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
-	{ MODKEY,                       XK_b,      togglebar,      {0} },
+	//{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
 	{ MODKEY,                       XK_i,      incnmaster,     {.i = +1 } },
@@ -76,7 +84,8 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
 	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
 	{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
-	{ MODKEY,                       XK_comma,  focusmon,       {.i = -1 } },
+	//{ MODKEY,                       XK_comma,  focusmon,       {.i = -1 } },
+	//{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
 	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
@@ -86,6 +95,28 @@ static Key keys[] = {
 	TAGKEYS(                        XK_4,                      3)
 	TAGKEYS(                        XK_5,                      4)
 	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
+
+	// Custom:
+	// NOTE: See /usr/include/X11/keysymdef.h
+	// TODO: mod4+shift+n - minimize all windows
+	// TODO: mod4+i - clear clipboard
+	// TODO: mod4+shift+h/j - move windows
+	// TODO: mod4+r - run, same as XK_p
+	// TODO: mod4+c - center window
+	// TODO: mod4+n - minimize window
+	// TODO: mod4+m - toggle maximize - equivalent of XK_m+XK_t
+	// TODO: mod4+f - toggle fullscreen
+	// TODO: mod4+ctrl+r - reload
+	// TODO: mod4+wheelup - compton-trans -c +10
+	// TODO: mod4+wheeldown - compton-trans -c -10
+	// TODO: mod4+w - some kind of menu
+	// TODO: autorun, feh, set bg
+	{ MODKEY,                       XK_comma,  spawn,          {.v = voldowncmd } },
+	{ MODKEY,                       XK_period, spawn,          {.v = volupcmd } },
+	{ MODKEY,                       XK_v,      spawn,          {.v = voltogglecmd } },
+	{ MODKEY,                       XK_b,      spawn,          {.v = captogglecmd } },
+	{ MODKEY,                       XK_Menu,   spawn,          {.v = pastecmd } },
+	{ MODKEY,                       XK_Print,  spawn,          {.v = scrotcmd } },
 };
 
 /* button definitions */
