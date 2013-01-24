@@ -19,6 +19,9 @@
 // urgent border - http://dwm.suckless.org/patches/urgentborder
 // attach aside - http://dwm.suckless.org/patches/attachaside
 // attach above current client - http://dwm.suckless.org/patches/attachabove
+// full taskbar - http://dwm.suckless.org/patches/fancybar
+//   see also: http://dwm.suckless.org/patches/fancycoloredbarclickable
+// colored statusbar - http://dwm.suckless.org/patches/statuscolors
 
 // http://dwm.suckless.org/patches/movestack
 // http://dwm.suckless.org/patches/movestack-5.8.2.diff
