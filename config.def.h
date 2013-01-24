@@ -46,6 +46,12 @@
 // #define FOCUS_ON_CLICK 1
 // #endif
 
+// http://dwm.suckless.org/patches/urgentborder
+// http://dwm.suckless.org/patches/dwm-5.7.2-urgentborder.diff
+// #ifndef URGENT_BORDER
+// #define URGENT_BORDER 1
+// #endif
+
 /* appearance */
 static const char font[]            = "-*-terminus-medium-r-*-*-12-*-*-*-*-*-*-*";
 
@@ -55,6 +61,9 @@ static const char normfgcolor[]     = "#aaaaaa";
 static const char selbordercolor[]  = "#535d6c";
 static const char selbgcolor[]      = "#535d6c";
 static const char selfgcolor[]      = "#ffffff";
+#if URGENT_BORDER
+static const char urgbordercolor[]  = "#ff0000";
+#endif
 
 static const unsigned int borderpx  = 1;        /* border pixel of windows */
 #if USELESS_GAP
