@@ -138,6 +138,7 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_j,      movestack,      {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_k,      movestack,      {.i = -1 } },
 	{ MODKEY,                       XK_r,      spawn,          {.v = amenucmd } },
+	{ MODKEY,                       XK_w,      spawn,          {.v = amenucmd } },
 	//{ MODKEY|ControlMask,           XK_r,      self_restart,   {0} },
 	{ MODKEY|ControlMask,           XK_r,      spawn,          {.v = reloadcmd } },
 };
