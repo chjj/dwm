@@ -43,6 +43,10 @@
 #include "draw.h"
 #include "util.h"
 
+/* custom options */
+#define FOCUS_ON_CLICK 1
+#define USELESS_GAP 1
+
 /* macros */
 #define BUTTONMASK              (ButtonPressMask|ButtonReleaseMask)
 #define CLEANMASK(mask)         (mask & ~(numlockmask|LockMask) & (ShiftMask|ControlMask|Mod1Mask|Mod2Mask|Mod3Mask|Mod4Mask|Mod5Mask))

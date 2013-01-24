@@ -36,11 +36,15 @@
 
 // http://dwm.suckless.org/patches/uselessgap
 // http://dwm.suckless.org/patches/dwm-5.9-uselessgap.diff
-#define USELESS_GAP 1
+// #ifndef USELESS_GAP
+// #define USELESS_GAP 1
+// #endif
 
 // http://dwm.suckless.org/patches/focusonclick
 // http://dwm.suckless.org/patches/dwm-6.0-focusonclick.diff
-#define FOCUS_ON_CLICK 1
+// #ifndef FOCUS_ON_CLICK
+// #define FOCUS_ON_CLICK 1
+// #endif
 
 /* appearance */
 static const char font[]            = "-*-terminus-medium-r-*-*-12-*-*-*-*-*-*-*";
