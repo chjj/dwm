@@ -42,6 +42,8 @@
 // https://bbs.archlinux.org/viewtopic.php?id=92895&p=1
 // https://github.com/simongmzlj/dwm/blob/master/gaps.diff
 // https://github.com/vodik/dwm/commit/74cebfa997815ac0dce34934a5626414d3c8553a
+// http://ompldr.org/vY2s2Mg/gaps.diff
+// https://bbs.archlinux.org/viewtopic.php?pid=1050873#p1050873
 // #ifndef USELESS_GAP
 // #define USELESS_GAP 1
 // #endif
@@ -72,6 +74,9 @@ static const char urgbordercolor[]  = "#ff0000";
 #endif
 
 static const unsigned int borderpx  = 1;        /* border pixel of windows */
+#if USELESS_GAP
+static const unsigned int gappx     = 6;        /* gap pixel between windows */
+#endif
 static const unsigned int snap      = 32;       /* snap pixel */
 static const Bool showbar           = True;     /* False means no bar */
 static const Bool topbar            = True;     /* False means bottom bar */
@@ -102,12 +107,21 @@ static const float mfact      = 0.50; /* factor of master area size [0.05..0.95]
 static const int nmaster      = 1;    /* number of clients in master area */
 static const Bool resizehints = False; /* True means respect size hints in tiled resizals */
 
+#if USELESS_GAP
+static const Layout layouts[] = {
+	/* symbol     gap       arrange function */
+	{ "[]=",      True,     tile },    /* first entry is default */
+	{ "><>",      False,    NULL },    /* no layout function means floating behavior */
+	{ "[M]",      False,    monocle },
+};
+#else
 static const Layout layouts[] = {
 	/* symbol     arrange function */
 	{ "[]=",      tile },    /* first entry is default */
 	{ "><>",      NULL },    /* no layout function means floating behavior */
 	{ "[M]",      monocle },
 };
+#endif
 
 /* key definitions */
 #define MODKEY Mod4Mask
