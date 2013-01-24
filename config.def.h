@@ -34,6 +34,10 @@
 // http://dwm.suckless.org/patches/dwm-5.9-uselessgap.diff
 #define USELESS_GAP 1
 
+// http://dwm.suckless.org/patches/focusonclick
+// http://dwm.suckless.org/patches/dwm-6.0-focusonclick.diff
+#define FOCUS_ON_CLICK 1
+
 /* appearance */
 static const char font[]            = "-*-terminus-medium-r-*-*-12-*-*-*-*-*-*-*";
 
@@ -51,6 +55,11 @@ static const unsigned int gappx     = 6;        /* gap pixel between windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const Bool showbar           = True;     /* False means no bar */
 static const Bool topbar            = True;     /* False means bottom bar */
+
+#if FOCUS_ON_CLICK
+/* False means using the scroll wheel on a window will not change focus */
+static const Bool focusonwheelscroll = False;
+#endif
 
 /* tagging */
 static const char *tags[] = { "root", "www", "media", "opt", "etc" };
