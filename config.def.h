@@ -17,10 +17,15 @@
 // have new windows become slaves instead of masters - http://dwm.suckless.org/patches/attachaside
 // keyboard moving/resizing - http://dwm.suckless.org/patches/moveresize
 // focusonclick only - http://dwm.suckless.org/patches/focusonclick
+// selfrestart - http://dwm.suckless.org/patches/selfrestart
 
 // http://dwm.suckless.org/patches/movestack
 // http://dwm.suckless.org/patches/movestack-5.8.2.diff
 #include "movestack.c"
+
+// http://dwm.suckless.org/patches/selfrestart
+// http://dwm.suckless.org/patches/dwm-r1615-selfrestart.diff
+#include "selfrestart.c"
 
 /* appearance */
 static const char font[]            = "-*-terminus-medium-r-*-*-12-*-*-*-*-*-*-*";
@@ -132,6 +137,7 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_j,      movestack,      {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_k,      movestack,      {.i = -1 } },
 	{ MODKEY,                       XK_r,      spawn,          {.v = amenucmd } },
+	{ MODKEY|ControlMask,           XK_r,      self_restart,   {0} },
 };
 
 /* button definitions */
