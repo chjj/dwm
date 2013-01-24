@@ -25,7 +25,7 @@
 
 // http://dwm.suckless.org/patches/selfrestart
 // http://dwm.suckless.org/patches/dwm-r1615-selfrestart.diff
-#include "selfrestart.c"
+// #include "selfrestart.c"
 
 /* appearance */
 static const char font[]            = "-*-terminus-medium-r-*-*-12-*-*-*-*-*-*-*";
@@ -91,7 +91,8 @@ static const char *voltogglecmd[] = { "amixer", "set", "Master", "toggle", NULL 
 static const char *captogglecmd[] = { "amixer", "set", "Capture", "toggle", NULL };
 static const char *pastecmd[]     = { "xdotool", "click", "2", NULL };
 static const char *scrotcmd[]     = { "scrot", "-e", "mv $f ~/screenshots/ 2> /dev/null", NULL };
-static const char *amenucmd[] = { "amenu", "d", "-fn", font, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbgcolor, "-sf", selfgcolor, NULL };
+static const char *amenucmd[]     = { "amenu", "d", "-fn", font, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbgcolor, "-sf", selfgcolor, NULL };
+static const char *reloadcmd[]    = { "killall", "dwm", NULL };
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -137,7 +138,8 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_j,      movestack,      {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_k,      movestack,      {.i = -1 } },
 	{ MODKEY,                       XK_r,      spawn,          {.v = amenucmd } },
-	{ MODKEY|ControlMask,           XK_r,      self_restart,   {0} },
+	//{ MODKEY|ControlMask,           XK_r,      self_restart,   {0} },
+	{ MODKEY|ControlMask,           XK_r,      spawn,          {.v = reloadcmd } },
 };
 
 /* button definitions */
