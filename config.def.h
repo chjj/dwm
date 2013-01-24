@@ -34,6 +34,7 @@
 
 // http://dwm.suckless.org/patches/selfrestart
 // http://dwm.suckless.org/patches/dwm-r1615-selfrestart.diff
+#define DWM_PATH "/usr/bin/dwm"
 #include "selfrestart.c"
 
 // Focus urgent function
