@@ -24,12 +24,14 @@
 
 /* appearance */
 static const char font[]            = "-*-terminus-medium-r-*-*-12-*-*-*-*-*-*-*";
-static const char normbordercolor[] = "#444444";
+
+static const char normbordercolor[] = "#000000";
 static const char normbgcolor[]     = "#222222";
-static const char normfgcolor[]     = "#bbbbbb";
-static const char selbordercolor[]  = "#005577";
-static const char selbgcolor[]      = "#005577";
-static const char selfgcolor[]      = "#eeeeee";
+static const char normfgcolor[]     = "#aaaaaa";
+static const char selbordercolor[]  = "#535d6c";
+static const char selbgcolor[]      = "#535d6c";
+static const char selfgcolor[]      = "#ffffff";
+
 static const unsigned int borderpx  = 1;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const Bool showbar           = True;     /* False means no bar */
