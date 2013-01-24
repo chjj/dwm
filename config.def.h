@@ -1,18 +1,14 @@
 /* See LICENSE file for copyright and license details. */
 
 // TODO:
-// mod4+shift+n - minimize all windows
+// mod4+n/mod4+shift+n - minimize/restore windows
 // mod4+i - clear clipboard
-// mod4+shift+h/j - move windows
-// mod4+r - run, same as XK_p
 // mod4+c - center window
 // mod4+n - minimize window
 // mod4+m - toggle maximize - equivalent of XK_m+XK_t
 // mod4+f - toggle fullscreen
-// mod4+ctrl+r - reload
 // mod4+wheelup - compton-trans -c +10
 // mod4+wheeldown - compton-trans -c -10
-// mod4+w - some kind of menu
 // autorun, feh, set bg - http://dwm.suckless.org/patches/autostart
 // have new windows become slaves instead of masters - http://dwm.suckless.org/patches/attachaside
 // keyboard moving/resizing - http://dwm.suckless.org/patches/moveresize
