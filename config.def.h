@@ -16,9 +16,13 @@
 // autorun, feh, set bg - http://dwm.suckless.org/patches/autostart
 // have new windows become slaves instead of masters - http://dwm.suckless.org/patches/attachaside
 // keyboard moving/resizing - http://dwm.suckless.org/patches/moveresize
+//   another: http://dwm.suckless.org/patches/maximize
 //   better: http://dwm.suckless.org/patches/exresize
 // focusonclick only - http://dwm.suckless.org/patches/focusonclick
 // selfrestart - http://dwm.suckless.org/patches/selfrestart
+// urgent border - http://dwm.suckless.org/patches/urgentborder
+// attach aside - http://dwm.suckless.org/patches/attachaside
+// attach above current client - http://dwm.suckless.org/patches/attachabove
 
 // http://dwm.suckless.org/patches/movestack
 // http://dwm.suckless.org/patches/movestack-5.8.2.diff
