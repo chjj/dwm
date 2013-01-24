@@ -16,6 +16,7 @@
 // autorun, feh, set bg - http://dwm.suckless.org/patches/autostart
 // have new windows become slaves instead of masters - http://dwm.suckless.org/patches/attachaside
 // keyboard moving/resizing - http://dwm.suckless.org/patches/moveresize
+//   better: http://dwm.suckless.org/patches/exresize
 // focusonclick only - http://dwm.suckless.org/patches/focusonclick
 // selfrestart - http://dwm.suckless.org/patches/selfrestart
 
@@ -29,6 +30,10 @@
 
 #include "focusurgent.c"
 
+// http://dwm.suckless.org/patches/uselessgap
+// http://dwm.suckless.org/patches/dwm-5.9-uselessgap.diff
+#define USELESS_GAP 1
+
 /* appearance */
 static const char font[]            = "-*-terminus-medium-r-*-*-12-*-*-*-*-*-*-*";
 
@@ -40,6 +45,9 @@ static const char selbgcolor[]      = "#535d6c";
 static const char selfgcolor[]      = "#ffffff";
 
 static const unsigned int borderpx  = 1;        /* border pixel of windows */
+#if USELESS_GAP
+static const unsigned int gappx     = 6;        /* gap pixel between windows */
+#endif
 static const unsigned int snap      = 32;       /* snap pixel */
 static const Bool showbar           = True;     /* False means no bar */
 static const Bool topbar            = True;     /* False means bottom bar */
