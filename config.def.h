@@ -35,6 +35,13 @@
 
 // http://dwm.suckless.org/patches/uselessgap
 // http://dwm.suckless.org/patches/dwm-5.9-uselessgap.diff
+// For other useless gaps, see:
+// https://www.google.com/search?q=dwm+vertical+useless+gap
+// https://bbs.archlinux.org/viewtopic.php?pid=1055914
+// https://bbs.archlinux.org/viewtopic.php?id=92895&p=26
+// https://bbs.archlinux.org/viewtopic.php?id=92895&p=1
+// https://github.com/simongmzlj/dwm/blob/master/gaps.diff
+// https://github.com/vodik/dwm/commit/74cebfa997815ac0dce34934a5626414d3c8553a
 // #ifndef USELESS_GAP
 // #define USELESS_GAP 1
 // #endif
