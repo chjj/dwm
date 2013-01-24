@@ -1,5 +1,27 @@
 /* See LICENSE file for copyright and license details. */
 
+// TODO:
+// mod4+shift+n - minimize all windows
+// mod4+i - clear clipboard
+// mod4+shift+h/j - move windows
+// mod4+r - run, same as XK_p
+// mod4+c - center window
+// mod4+n - minimize window
+// mod4+m - toggle maximize - equivalent of XK_m+XK_t
+// mod4+f - toggle fullscreen
+// mod4+ctrl+r - reload
+// mod4+wheelup - compton-trans -c +10
+// mod4+wheeldown - compton-trans -c -10
+// mod4+w - some kind of menu
+// autorun, feh, set bg - http://dwm.suckless.org/patches/autostart
+// have new windows become slaves instead of masters - http://dwm.suckless.org/patches/attachaside
+// keyboard moving/resizing - http://dwm.suckless.org/patches/moveresize
+// focusonclick only - http://dwm.suckless.org/patches/focusonclick
+
+// http://dwm.suckless.org/patches/movestack
+// http://dwm.suckless.org/patches/movestack-5.8.2.diff
+#include "movestack.c"
+
 /* appearance */
 static const char font[]            = "-*-terminus-medium-r-*-*-12-*-*-*-*-*-*-*";
 static const char normbordercolor[] = "#444444";
@@ -98,25 +120,14 @@ static Key keys[] = {
 
 	// Custom:
 	// NOTE: See /usr/include/X11/keysymdef.h
-	// TODO: mod4+shift+n - minimize all windows
-	// TODO: mod4+i - clear clipboard
-	// TODO: mod4+shift+h/j - move windows
-	// TODO: mod4+r - run, same as XK_p
-	// TODO: mod4+c - center window
-	// TODO: mod4+n - minimize window
-	// TODO: mod4+m - toggle maximize - equivalent of XK_m+XK_t
-	// TODO: mod4+f - toggle fullscreen
-	// TODO: mod4+ctrl+r - reload
-	// TODO: mod4+wheelup - compton-trans -c +10
-	// TODO: mod4+wheeldown - compton-trans -c -10
-	// TODO: mod4+w - some kind of menu
-	// TODO: autorun, feh, set bg
 	{ MODKEY,                       XK_comma,  spawn,          {.v = voldowncmd } },
 	{ MODKEY,                       XK_period, spawn,          {.v = volupcmd } },
 	{ MODKEY,                       XK_v,      spawn,          {.v = voltogglecmd } },
 	{ MODKEY,                       XK_b,      spawn,          {.v = captogglecmd } },
 	{ MODKEY,                       XK_Menu,   spawn,          {.v = pastecmd } },
 	{ MODKEY,                       XK_Print,  spawn,          {.v = scrotcmd } },
+	{ MODKEY|ShiftMask,             XK_j,      movestack,      {.i = +1 } },
+	{ MODKEY|ShiftMask,             XK_k,      movestack,      {.i = -1 } },
 };
 
 /* button definitions */
