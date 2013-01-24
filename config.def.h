@@ -31,7 +31,11 @@
 // http://dwm.suckless.org/patches/dwm-r1615-selfrestart.diff
 #include "selfrestart.c"
 
+// Focus urgent function
 #include "focusurgent.c"
+
+// Center window function
+#include "center.c"
 
 // http://dwm.suckless.org/patches/uselessgap
 // http://dwm.suckless.org/patches/dwm-5.9-uselessgap.diff
@@ -195,6 +199,7 @@ static Key keys[] = {
 	{ MODKEY,                       XK_w,      spawn,          {.v = amenucmd } },
 	{ MODKEY|ControlMask,           XK_r,      self_restart,   {0} },
 	{ MODKEY,                       XK_u,      focusurgent,    {0} },
+	{ MODKEY,                       XK_c,      center,         {0} },
 };
 
 /* button definitions */
