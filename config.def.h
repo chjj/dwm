@@ -96,7 +96,7 @@ static const Rule rules[] = {
 	 *	WM_NAME(STRING) = title
 	 */
 	/* class      instance    title       tags mask     isfloating   monitor */
-	{ "qemu-system-x86_64", NULL, NULL,   0,            True,        -1 },
+	{ NULL,       NULL,       "QEMU",     0,            True,        -1 },
 	{ "MPlayer",  NULL,       NULL,       0,            True,        -1 },
 	{ "Skype",    NULL,       NULL,       0,            False,       -1 },
 	{ "XClock",   NULL,       NULL,       0,            True,        -1 },
