@@ -115,7 +115,7 @@ static const Layout layouts[] = {
 
 /* commands */
 static const char *dmenucmd[] = { "dmenu_run", "-fn", font, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbgcolor, "-sf", selfgcolor, NULL };
-static const char *termcmd[]  = { "uxterm", NULL };
+static const char *termcmd[]  = { "xterm", NULL };
 
 // Custom:
 static const char *voldowncmd[]   = { "amixer", "set", "Master", "5%-", NULL };
