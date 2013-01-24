@@ -3,25 +3,30 @@
 // TODO:
 // mod4+n/mod4+shift+n - minimize/restore windows
 // mod4+i - clear clipboard
-// mod4+c - center window
 // mod4+n - minimize window
 // mod4+m - toggle maximize - equivalent of XK_m+XK_t
 // mod4+f - toggle fullscreen
 // mod4+wheelup - compton-trans -c +10
 // mod4+wheeldown - compton-trans -c -10
 // autorun, feh, set bg - http://dwm.suckless.org/patches/autostart
-// have new windows become slaves instead of masters - http://dwm.suckless.org/patches/attachaside
+// have new windows become slaves instead of masters:
+//   http://dwm.suckless.org/patches/attachaside
 // keyboard moving/resizing - http://dwm.suckless.org/patches/moveresize
 //   another: http://dwm.suckless.org/patches/maximize
 //   better: http://dwm.suckless.org/patches/exresize
-// focusonclick only - http://dwm.suckless.org/patches/focusonclick
-// selfrestart - http://dwm.suckless.org/patches/selfrestart
-// urgent border - http://dwm.suckless.org/patches/urgentborder
 // attach aside - http://dwm.suckless.org/patches/attachaside
 // attach above current client - http://dwm.suckless.org/patches/attachabove
 // full taskbar - http://dwm.suckless.org/patches/fancybar
 //   see also: http://dwm.suckless.org/patches/fancycoloredbarclickable
-// colored statusbar - http://dwm.suckless.org/patches/statuscolors
+// Built-in launcher:
+// https://bbs.archlinux.org/viewtopic.php?pid=874763#p874763
+// Systray
+// https://bbs.archlinux.org/viewtopic.php?pid=874768#p874768
+// http://dwm.suckless.org/patches/systray
+// Status Colors
+// http://dwm.suckless.org/patches/statuscolors
+// Statusbar written in C
+// http://dwm.suckless.org/dwmstatus/
 
 // http://dwm.suckless.org/patches/movestack
 // http://dwm.suckless.org/patches/movestack-5.8.2.diff
