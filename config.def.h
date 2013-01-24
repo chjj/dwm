@@ -67,7 +67,8 @@ static const char normbordercolor[] = "#000000";
 static const char normbgcolor[]     = "#222222";
 static const char normfgcolor[]     = "#aaaaaa";
 static const char selbordercolor[]  = "#535d6c";
-static const char selbgcolor[]      = "#535d6c";
+//static const char selbgcolor[]      = "#535d6c";
+static const char selbgcolor[]      = "#222222";
 static const char selfgcolor[]      = "#ffffff";
 #if URGENT_BORDER
 static const char urgbordercolor[]  = "#ff0000";
