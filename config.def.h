@@ -27,6 +27,8 @@
 // http://dwm.suckless.org/patches/dwm-r1615-selfrestart.diff
 #include "selfrestart.c"
 
+#include "focusurgent.c"
+
 /* appearance */
 static const char font[]            = "-*-terminus-medium-r-*-*-12-*-*-*-*-*-*-*";
 
@@ -140,7 +142,7 @@ static Key keys[] = {
 	{ MODKEY,                       XK_r,      spawn,          {.v = amenucmd } },
 	{ MODKEY,                       XK_w,      spawn,          {.v = amenucmd } },
 	{ MODKEY|ControlMask,           XK_r,      self_restart,   {0} },
-	//{ MODKEY|ControlMask,           XK_r,      spawn,          {.v = reloadcmd } },
+	{ MODKEY,                       XK_u,      focusurgent,    {0} },
 };
 
 /* button definitions */
