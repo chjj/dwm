@@ -146,7 +146,7 @@ static const char *voltogglecmd[] = { "amixer", "set", "Master", "toggle", NULL 
 static const char *captogglecmd[] = { "amixer", "set", "Capture", "toggle", NULL };
 static const char *pastecmd[]     = { "xdotool", "click", "2", NULL };
 static const char *scrotcmd[]     = { "scrot", "-e", "mv $f ~/screenshots/ 2> /dev/null", NULL };
-static const char *amenucmd[] = { "amenu", "d", "-fn", font, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbgcolor, "-sf", selfgcolor, NULL };
+static const char *amenucmd[]     = { "amenu", "d", "-fn", font, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbgcolor, "-sf", selfgcolor, NULL };
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
