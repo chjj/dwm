@@ -218,7 +218,7 @@ static Key keys[] = {
 	{ MODKEY|ControlMask,           XK_r,      self_restart,   {0} },
 	{ MODKEY,                       XK_u,      focusurgent,    {0} },
 	{ MODKEY,                       XK_c,      center,         {0} },
-	{ MODKEY,                       XK_i,      spawn,          {.v = clipcmd } },
+	{ MODKEY,                       XK_g,      spawn,          {.v = clipcmd } },
 };
 
 /* button definitions */
