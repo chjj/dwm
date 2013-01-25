@@ -2,7 +2,6 @@
 
 // TODO:
 // mod4+n/mod4+shift+n - minimize/restore windows
-// mod4+i - clear clipboard
 // mod4+n - minimize window
 // mod4+m - toggle maximize - equivalent of XK_m+XK_t
 // mod4+f - toggle fullscreen
@@ -77,7 +76,6 @@ static const char normbordercolor[] = "#000000";
 static const char normbgcolor[]     = "#222222";
 static const char normfgcolor[]     = "#aaaaaa";
 static const char selbordercolor[]  = "#535d6c";
-//static const char selbgcolor[]      = "#535d6c";
 static const char selbgcolor[]      = "#222222";
 static const char selfgcolor[]      = "#ffffff";
 #if URGENT_BORDER
@@ -111,10 +109,10 @@ static const Rule rules[] = {
 	{ "MPlayer",  NULL,       NULL,       0,            True,        -1 },
 	{ "Skype",    NULL,       NULL,       0,            False,       -1 },
 	{ "XClock",   NULL,       NULL,       0,            True,        -1 },
+	{ "feh",      NULL,       NULL,       0,            True,        -1 },
 };
 
 /* layout(s) */
-//static const float mfact      = 0.55; /* factor of master area size [0.05..0.95] */
 static const float mfact      = 0.50; /* factor of master area size [0.05..0.95] */
 static const int nmaster      = 1;    /* number of clients in master area */
 static const Bool resizehints = False; /* True means respect size hints in tiled resizals */
@@ -156,11 +154,21 @@ static const char *volupcmd[]     = { "amixer", "set", "Master", "5%+", NULL };
 static const char *voltogglecmd[] = { "amixer", "set", "Master", "toggle", NULL };
 static const char *captogglecmd[] = { "amixer", "set", "Capture", "toggle", NULL };
 static const char *pastecmd[]     = { "xdotool", "click", "2", NULL };
-static const char *scrotcmd[]     = { "scrot", "-e", "mv $f ~/screenshots/ 2> /dev/null", NULL };
+#ifdef USE_IMAGEMAGICK
+static const char *scrotcmd[]     = { "sh", "-c", "import -window root ~/screenshot.png", NULL };
+#else
+static const char *scrotcmd[]     = { "scrot", "-e", "mv $f ~/screenshots", NULL };
+#endif
 static const char *amenucmd[]     = { "amenu", "d", "-b", "-p", ">", "-fn", font,
                                       "-nb", normbgcolor, "-nf", normfgcolor,
                                       "-sb", selbgcolor, "-sf", selfgcolor,
                                       NULL };
+static const char *clipcmd[]  = { "sh", "-c",
+                                  " echo '' | xclip -i -selection primary;"
+                                  " echo '' | xclip -i -selection secondary;"
+                                  " echo '' | xclip -i -selection clipboard;"
+                                  " killall xclip || killall -9 xclip",
+                                  NULL };
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -201,8 +209,8 @@ static Key keys[] = {
 	{ MODKEY,                       XK_period, spawn,          {.v = volupcmd } },
 	{ MODKEY,                       XK_v,      spawn,          {.v = voltogglecmd } },
 	{ MODKEY,                       XK_b,      spawn,          {.v = captogglecmd } },
-	{ MODKEY,                       XK_Menu,   spawn,          {.v = pastecmd } },
-	{ MODKEY,                       XK_Print,  spawn,          {.v = scrotcmd } },
+	{ 0,                            XK_Menu,   spawn,          {.v = pastecmd } },
+	{ 0,                            XK_Print,  spawn,          {.v = scrotcmd } },
 	{ MODKEY|ShiftMask,             XK_j,      movestack,      {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_k,      movestack,      {.i = -1 } },
 	{ MODKEY,                       XK_r,      spawn,          {.v = amenucmd } },
@@ -210,6 +218,7 @@ static Key keys[] = {
 	{ MODKEY|ControlMask,           XK_r,      self_restart,   {0} },
 	{ MODKEY,                       XK_u,      focusurgent,    {0} },
 	{ MODKEY,                       XK_c,      center,         {0} },
+	{ MODKEY,                       XK_i,      spawn,          {.v = clipcmd } },
 };
 
 /* button definitions */
