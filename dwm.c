@@ -1023,7 +1023,12 @@ grabbuttons(Client *c, Bool focused) {
 						XGrabButton(dpy, buttons[i].button,
 						            buttons[i].mask | modifiers[j],
 						            c->win, False, BUTTONMASK,
-#if FOCUS_ON_CLICK
+#if FOCUS_ON_CLICK && defined(FOCUS_ON_CLICK_BROKEN)
+						            // NOTE: This breaks window dragging.
+						            // And it may not actually be necessary
+						            // to use this patch properly. Remove
+						            // the above defined() check or define
+						            // FOCUS_ON_CLICK_BROKEN if it is necessary.
 						            GrabModeSync, GrabModeSync, None, None);
 #else
 						            GrabModeAsync, GrabModeSync, None, None);
