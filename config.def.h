@@ -164,7 +164,7 @@ static const char *scrotcmd[]     = { "sh", "-c", "import -window root ~/screens
 #else
 static const char *scrotcmd[]     = { "scrot", "-e", "mv $f ~/screenshots", NULL };
 #endif
-static const char *amenucmd[]     = { "amenu", "d", "-b", "-p", ">", "-fn", font,
+static const char *amenucmd[]     = { "amenu", "menu", "-b", "-p", ">", "-fn", font,
                                       "-nb", normbgcolor, "-nf", normfgcolor,
                                       "-sb", selbgcolor, "-sf", selfgcolor,
                                       NULL };
