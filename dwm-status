@@ -71,8 +71,8 @@ get_load() {
 
 mem=
 get_mem() {
-  local cur="$(free -m | grep cache: | awk '{ print $3 }')"
-  local max="$(free -m | grep Mem | awk '{ print $2 }')"
+  local cur=$(free -m | grep cache: | awk '{ print $3 }')
+  local max=$(free -m | grep Mem | awk '{ print $2 }')
   local _mem
   if test "$1" != "perc"; then
     _mem="$cur/$max"
@@ -238,7 +238,7 @@ get_uptime() {
 tasks=
 get_tasks() {
   local _tasks=$(ps -e | wc -l)
-  _tasks=$((_tasks-1))
+  _tasks=$((_tasks - 1))
   ret="$_tasks"
   tasks="$_tasks"
 }
@@ -334,7 +334,7 @@ vol=
 get_vol() {
   local mixer="Master"
   test -n "$1" && mixer="$1"
-  local data="$(amixer get "$mixer")"
+  local data=$(amixer get "$mixer")
   local _vol=$(echo "$data" | grep -m 1 -o "[0-9]\+%" | sed 's/%//')
   local mute=$(echo "$data" | grep -m 1 -o "\[off\]")
   local state
@@ -428,7 +428,7 @@ get_battery() {
 }
 
 get__battery() {
-  local data="$(acpi)"
+  local data=$(acpi)
   local _battery=$(echo "$data" | grep -m 1 -o "[0-9]\+%" | sed 's/%//')
   local status=$(echo "$data" | sed 's/^.* \([a-zA-Z]\+\),.*$/\1/')
   status=$(echo "$status" | sed 's/^\(.\).*$/\1/')
@@ -474,7 +474,7 @@ timer() {
   shift
   shift
 
-  local tval="$(date +'%s')"
+  local tval=$(date +'%s')
   local lval=$(eval 'echo $l_'${name})
   test -z "$lval" && lval=0
 
