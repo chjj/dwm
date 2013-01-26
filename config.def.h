@@ -164,10 +164,10 @@ static const char *scrotcmd[]     = { "sh", "-c", "import -window root ~/screens
 #else
 static const char *scrotcmd[]     = { "scrot", "-e", "mv $f ~/screenshots", NULL };
 #endif
-static const char *amenucmd[]     = { "amenu", "menu", "-b", "-p", ">", "-fn", font,
-                                      "-nb", normbgcolor, "-nf", normfgcolor,
-                                      "-sb", selbgcolor, "-sf", selfgcolor,
-                                      NULL };
+static const char *amenucmd[]     = { "dwm-start", "menu", "-b", "-p", ">",
+                                      "-fn", font, "-nb", normbgcolor,
+                                      "-nf", normfgcolor, "-sb", selbgcolor,
+                                      "-sf", selfgcolor, NULL };
 static const char *clipcmd[]  = { "sh", "-c",
                                   " echo '' | xclip -i -selection primary;"
                                   " echo '' | xclip -i -selection secondary;"
