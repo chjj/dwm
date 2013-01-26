@@ -160,11 +160,7 @@ static const char *volupcmd[]     = { "amixer", "set", "Master", "5%+", NULL };
 static const char *voltogglecmd[] = { "amixer", "set", "Master", "toggle", NULL };
 static const char *captogglecmd[] = { "amixer", "set", "Capture", "toggle", NULL };
 static const char *pastecmd[]     = { "xdotool", "click", "2", NULL };
-#ifdef USE_IMAGEMAGICK
-static const char *scrotcmd[]     = { "sh", "-c", "import -window root ~/screenshot.png", NULL };
-#else
 static const char *scrotcmd[]     = { "scrot", "-e", "mv $f ~/screenshots", NULL };
-#endif
 static const char *amenucmd[]     = { "dwm-start", "menu", "-b", "-p", ">",
                                       "-fn", font, "-nb", normbgcolor,
                                       "-nf", normfgcolor, "-sb", selbgcolor,
