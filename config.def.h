@@ -1,5 +1,9 @@
 /* See LICENSE file for copyright and license details. */
 
+// All patches:
+// movestack, uselessgap (improved version), focusonclick,
+// urgentborder, selfrestart (customized), focusurgent (custom)
+
 // TODO:
 // mod4+n/mod4+shift+n - minimize/restore windows
 // mod4+n - minimize window
@@ -29,6 +33,7 @@
 
 // http://dwm.suckless.org/patches/movestack
 // http://dwm.suckless.org/patches/movestack-5.8.2.diff
+// alternative: http://dwm.suckless.org/patches/push
 #include "movestack.c"
 
 // http://dwm.suckless.org/patches/selfrestart
