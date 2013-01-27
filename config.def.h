@@ -10,8 +10,6 @@
 // mod4+n - minimize window
 // mod4+m - toggle maximize - equivalent of XK_m+XK_t
 // mod4+f - toggle fullscreen
-// mod4+wheelup - compton-trans -c +10
-// mod4+wheeldown - compton-trans -c -10
 // autorun, feh, set bg - http://dwm.suckless.org/patches/autostart
 // have new windows become slaves instead of masters:
 //   http://dwm.suckless.org/patches/attachaside
@@ -159,16 +157,18 @@ static const char *voltogglecmd[] = { "amixer", "set", "Master", "toggle", NULL 
 static const char *captogglecmd[] = { "amixer", "set", "Capture", "toggle", NULL };
 static const char *pastecmd[]     = { "xdotool", "click", "2", NULL };
 static const char *scrotcmd[]     = { "scrot", "-e", "mv $f ~/screenshots", NULL };
-static const char *amenucmd[]     = { "dwm-start", "menu", "-b", "-p", ">",
+static const char *startcmd[]     = { "dwm-start", "menu", "-b", "-p", ">",
                                       "-fn", font, "-nb", normbgcolor,
                                       "-nf", normfgcolor, "-sb", selbgcolor,
                                       "-sf", selfgcolor, NULL };
-static const char *clipcmd[]  = { "sh", "-c",
-                                  " echo '' | xclip -i -selection primary;"
-                                  " echo '' | xclip -i -selection secondary;"
-                                  " echo '' | xclip -i -selection clipboard;"
-                                  " killall xclip || killall -9 xclip",
-                                  NULL };
+static const char *clipcmd[]      = { "sh", "-c",
+                                      " echo '' | xclip -i -selection primary;"
+                                      " echo '' | xclip -i -selection secondary;"
+                                      " echo '' | xclip -i -selection clipboard;"
+                                      " killall xclip || killall -9 xclip",
+                                      NULL };
+static const char *transupcmd[]   = { "compton-trans", "-c", "+10", NULL };
+static const char *transdowncmd[] = { "compton-trans", "-c", "-10", NULL };
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -213,8 +213,8 @@ static Key keys[] = {
 	{ 0,                            XK_Print,  spawn,          {.v = scrotcmd } },
 	{ MODKEY|ShiftMask,             XK_j,      movestack,      {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_k,      movestack,      {.i = -1 } },
-	{ MODKEY,                       XK_r,      spawn,          {.v = amenucmd } },
-	{ MODKEY,                       XK_w,      spawn,          {.v = amenucmd } },
+	{ MODKEY,                       XK_r,      spawn,          {.v = startcmd } },
+	{ MODKEY,                       XK_w,      spawn,          {.v = startcmd } },
 	{ MODKEY|ControlMask,           XK_r,      self_restart,   {0} },
 	{ MODKEY,                       XK_u,      focusurgent,    {0} },
 	{ MODKEY,                       XK_c,      center,         {0} },
@@ -236,4 +236,8 @@ static Button buttons[] = {
 	{ ClkTagBar,            0,              Button3,        toggleview,     {0} },
 	{ ClkTagBar,            MODKEY,         Button1,        tag,            {0} },
 	{ ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
+
+	// Custom:
+	{ ClkClientWin,         MODKEY,         Button4,        spawn,          {.v = transupcmd } },
+	{ ClkClientWin,         MODKEY,         Button5,        spawn,          {.v = transdowncmd } },
 };
