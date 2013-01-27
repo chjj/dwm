@@ -91,7 +91,7 @@ static const char urgbordercolor[]  = "#ff0000";
 static const unsigned int borderpx  = 1;        /* border pixel of windows */
 #if USELESS_GAP
 // NOTE: Default was originally 6.
-static const unsigned int gappx     = 10;        /* gap pixel between windows */
+static const unsigned int gappx     = 15;        /* gap pixel between windows */
 #endif
 static const unsigned int snap      = 32;       /* snap pixel */
 static const Bool showbar           = True;     /* False means no bar */
@@ -111,7 +111,6 @@ static const Rule rules[] = {
 	 *	WM_NAME(STRING) = title
 	 */
 	/* class      instance    title       tags mask     isfloating   monitor */
-	// NULL,       NULL,       "QEMU",     0,            True,        -1 },
 	{ "qemu-system-x86_64", NULL, NULL,   0,            True,        -1 },
 	{ "MPlayer",  NULL,       NULL,       0,            True,        -1 },
 	{ "Skype",    NULL,       NULL,       0,            False,       -1 },
@@ -124,21 +123,19 @@ static const float mfact      = 0.50; /* factor of master area size [0.05..0.95]
 static const int nmaster      = 1;    /* number of clients in master area */
 static const Bool resizehints = False; /* True means respect size hints in tiled resizals */
 
-#if USELESS_GAP
 static const Layout layouts[] = {
+#if USELESS_GAP
 	/* symbol     gap       arrange function */
 	{ "[]=",      True,     tile },    /* first entry is default */
 	{ "><>",      False,    NULL },    /* no layout function means floating behavior */
 	{ "[M]",      False,    monocle },
-};
 #else
-static const Layout layouts[] = {
 	/* symbol     arrange function */
 	{ "[]=",      tile },    /* first entry is default */
 	{ "><>",      NULL },    /* no layout function means floating behavior */
 	{ "[M]",      monocle },
-};
 #endif
+};
 
 /* key definitions */
 #define MODKEY Mod4Mask
