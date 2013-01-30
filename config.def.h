@@ -135,6 +135,9 @@ static const Layout layouts[] = {
 #endif
 };
 
+// Toggle maximize function
+// #include "togglemaximize.c"
+
 /* key definitions */
 #define MODKEY Mod4Mask
 #define TAGKEYS(KEY,TAG) \
@@ -219,6 +222,9 @@ static Key keys[] = {
 	{ MODKEY,                       XK_u,      focusurgent,    {0} },
 	{ MODKEY,                       XK_c,      center,         {0} },
 	{ MODKEY,                       XK_g,      spawn,          {.v = clipcmd } },
+
+	// If togglemaximize is enabled:
+	//{ MODKEY,                       XK_m,      togglemaximize, {0} },
 };
 
 /* button definitions */
