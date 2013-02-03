@@ -272,9 +272,9 @@ get_home() {
 #
 
 get_disks() {
-  get_root $@
+  get_root "$@"
   local r="$ret"
-  get_home $@
+  get_home "$@"
   ret="$r $ret"
 }
 
@@ -401,7 +401,7 @@ battery=
 battery_full=$(cat /sys/class/power_supply/BAT0/energy_full_design)
 get_battery() {
   local battery_now=$(cat /sys/class/power_supply/BAT0/energy_now)
-  local _battery=$(((battery_now * 100) / battery_full))
+  local _battery=$((battery_now * 100 / battery_full))
   local status=$(cat /sys/class/power_supply/BAT0/status)
   case "$status" in
     Full)
@@ -479,7 +479,7 @@ timer() {
   test -z "$lval" && lval=0
 
   if test $((tval - lval)) -gt $interval; then
-    eval "${name} $@"
+    "$name" "$@"
     eval l_${name}="'$tval'"
   fi
 }
@@ -489,22 +489,18 @@ timer() {
 #
 
 main() {
-  local out loop interval
+  local out interval
 
   if test "$1" = "get"; then
     local cmd=$2
     shift
     shift
-    "get_$cmd" $@
+    "get_$cmd" "$@"
     echo "$ret"
     exit 0
   fi
 
-  loop=0
-  test "$1" = "loop" && loop=1
-
-  interval="$2"
-  test -z "$interval" && interval="30s"
+  interval="$1"
 
   while true; do
     get_cpu
@@ -546,7 +542,7 @@ main() {
 
     xsetroot -name "$out"
 
-    if test $loop -ne 1; then
+    if test -z "$interval"; then
       echo "$out"
       exit 0
     fi
@@ -555,4 +551,4 @@ main() {
   done
 }
 
-main $@
+main "$@"
