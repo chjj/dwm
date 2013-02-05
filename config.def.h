@@ -170,6 +170,7 @@ static const char *clipcmd[]      = { "sh", "-c",
                                       " echo '' | xclip -i -selection clipboard;"
                                       " killall xclip || killall -9 xclip",
                                       NULL };
+//static const char *clipcmd[]      = { "sh", "-c", "xsel -d -p -s -b" NULL };
 static const char *transupcmd[]   = { "compton-trans", "-c", "+10", NULL };
 static const char *transdowncmd[] = { "compton-trans", "-c", "-10", NULL };
 
