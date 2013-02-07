@@ -456,6 +456,10 @@ get_music() {
     title=$(basename "$title")
   fi
   local left=$(echo "$data" | grep '^TimeLeft: ' | sed 's/^TimeLeft: //')
+  if test -z "$left"; then
+    local cur=$(echo "$data" | grep '^CurrentTime: ' | sed 's/^CurrentTime: //')
+    test -n "$cur" && left="+$cur"
+  fi
   local _music="$title - $left"
   ret="$_music"
   music="$_music"
@@ -550,5 +554,9 @@ main() {
     sleep "$interval"
   done
 }
+
+#
+# Execute
+#
 
 main "$@"
