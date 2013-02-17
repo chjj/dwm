@@ -40,13 +40,11 @@
 #include <X11/extensions/Xinerama.h>
 #endif /* XINERAMA */
 
+/* custom options */
+#include "patches.h"
+
 #include "draw.h"
 #include "util.h"
-
-/* custom options */
-#define USELESS_GAP 1
-#define FOCUS_ON_CLICK 1
-#define URGENT_BORDER 1
 
 /* macros */
 #define BUTTONMASK              (ButtonPressMask|ButtonReleaseMask)
