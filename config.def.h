@@ -61,7 +61,6 @@ static const char urgbordercolor[]  = "#ff0000";
 
 static const unsigned int borderpx  = 1;        /* border pixel of windows */
 #if USELESS_GAP
-// NOTE: Default was originally 6.
 static const unsigned int gappx     = 15;        /* gap pixel between windows */
 #endif
 static const unsigned int snap      = 32;       /* snap pixel */
