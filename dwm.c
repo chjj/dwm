@@ -470,7 +470,7 @@ buttonpress(XEvent *e) {
 			click = ClkWinTitle;
 	}
 	else if((c = wintoclient(ev->window))) {
-#if FOCUS_ON_CLICK
+#if FOCUS_ON_CLICK && defined(FOCUS_ON_CLICK_SOMEWHAT_BROKEN)
 		if (focusonwheelscroll || (ev->button != Button4 && ev->button != Button5))
 			focus(c);
 		XAllowEvents(dpy, ReplayPointer, CurrentTime);
@@ -1034,7 +1034,9 @@ grabbuttons(Client *c, Bool focused) {
 		}
 		else
 			XGrabButton(dpy, AnyButton, AnyModifier, c->win, False,
-#if FOCUS_ON_CLICK
+#if FOCUS_ON_CLICK && defined(FOCUS_ON_CLICK_SOMEWHAT_BROKEN)
+									// NOTE: This breaks window dragging if the window is not
+									// focused on click.
 			            BUTTONMASK, GrabModeSync, GrabModeSync, None, None);
 #else
 			            BUTTONMASK, GrabModeAsync, GrabModeSync, None, None);
