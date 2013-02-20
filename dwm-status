@@ -271,11 +271,13 @@ get_home() {
 # Disks
 #
 
+disks=
 get_disks() {
   get_root "$@"
-  local r="$ret"
   get_home "$@"
-  ret="$r $ret"
+  local _disks="$root $home"
+  ret="$_disks"
+  disks="$_disks"
 }
 
 #
@@ -368,8 +370,9 @@ get_vol() {
     ;;
   esac
 
-  ret="$_vol%$state"
-  vol="$ret"
+  _vol="$_vol%$state"
+  ret="$_vol"
+  vol="$_vol"
 }
 
 #
@@ -423,8 +426,9 @@ get_battery() {
       status="?"
     ;;
   esac
-  ret="$_battery%$status"
-  battery="$ret"
+  _battery="$_battery%$status"
+  ret="$_battery"
+  battery="$_battery"
 }
 
 get__battery() {
@@ -432,8 +436,9 @@ get__battery() {
   local _battery=$(echo "$data" | grep -m 1 -o "[0-9]\+%" | sed 's/%//')
   local status=$(echo "$data" | sed 's/^.* \([a-zA-Z]\+\),.*$/\1/')
   status=$(echo "$status" | sed 's/^\(.\).*$/\1/')
-  ret="$_battery%$status"
-  battery="$ret"
+  _battery="$_battery%$status"
+  ret="$_battery"
+  battery="$_battery"
 }
 
 #
@@ -485,7 +490,10 @@ timer() {
   if test $((tval - lval)) -gt $interval; then
     "$name" "$@"
     eval l_${name}="'$tval'"
+    return 0
   fi
+
+  return 1
 }
 
 #
@@ -516,7 +524,7 @@ main() {
     get_down
     get_up
     get_vol Master
-    get_vol Capture mute && cap_vol="$ret"
+    get_vol Capture mute && cap_mute="$ret"
     get_battery
     get_time
 
@@ -537,7 +545,7 @@ main() {
       echo -n " "
       echo -n "${up}u"
       echo -n " • "
-      echo -n "${vol}${cap_vol}"
+      echo -n "${vol}${cap_mute}"
       echo -n " • "
       echo -n "${battery}"
       echo -n " • "
