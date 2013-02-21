@@ -3,7 +3,7 @@
 // All patches:
 // movestack, uselessgap (improved version), focusonclick (fixed),
 // urgentborder, selfrestart (customized), focusurgent (custom),
-// center (custom)
+// center (custom), restart (custom)
 
 // TODO:
 // mod4+n/mod4+shift+n - minimize/restore windows
@@ -37,8 +37,10 @@
 
 // http://dwm.suckless.org/patches/selfrestart
 // http://dwm.suckless.org/patches/dwm-r1615-selfrestart.diff
-#define DWM_PATH "/usr/bin/dwm"
-#include "selfrestart.c"
+// #include "selfrestart.c"
+
+// Restart function
+#include "restart.c"
 
 // Focus urgent function
 #include "focusurgent.c"
