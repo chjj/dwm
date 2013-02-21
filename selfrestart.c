@@ -55,11 +55,7 @@ char *get_dwm_path(){
  * https://sites.google.com/site/yjlnotes/notes/dwm
  */
 void self_restart(const Arg *arg) {
-#ifndef DWM_PATH
     char *const argv[] = {get_dwm_path(), NULL};
-#else
-    char *const argv[] = {DWM_PATH, NULL};
-#endif
 
     if(argv[0] == NULL){
         return;
