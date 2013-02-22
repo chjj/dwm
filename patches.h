@@ -16,6 +16,7 @@
 // http://dwm.suckless.org/patches/focusonclick
 // http://dwm.suckless.org/patches/dwm-6.0-focusonclick.diff
 #define FOCUS_ON_CLICK 1
+#define FOCUS_ON_CLICK_SOMEWHAT_BROKEN
 
 // http://dwm.suckless.org/patches/urgentborder
 // http://dwm.suckless.org/patches/dwm-5.7.2-urgentborder.diff
