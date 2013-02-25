@@ -298,6 +298,7 @@ get_gputemp() {
 # To find WOEID: http://weather.yahoo.com/
 #
 
+weather=
 get_weather() {
   local woeid="$1"
   test -z "$woeid" && woeid='12781722'
@@ -445,6 +446,7 @@ get__battery() {
 # Music - MOCP
 #
 
+music=
 get_music() {
   local data=$(mocp -i 2> /dev/null)
   if test -z "$data" || echo "$data" | grep -q 'State: STOP'; then
