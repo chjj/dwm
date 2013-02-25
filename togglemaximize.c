@@ -8,5 +8,5 @@ togglemaximize(const Arg *arg) {
 			: &layouts[2]
 	};
 	setlayout(&a);
-	maximized = !maximized;
+	maximized ^= 1;
 }
