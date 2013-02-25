@@ -2,8 +2,7 @@
 
 // All patches:
 // movestack, uselessgap (improved version), focusonclick (fixed),
-// urgentborder, selfrestart (customized), focusurgent (custom),
-// center (custom), restart (custom)
+// urgentborder, focusurgent (custom), center (custom), restart (custom)
 
 // TODO:
 // mod4+n/mod4+shift+n - minimize/restore windows
