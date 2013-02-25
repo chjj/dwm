@@ -3,7 +3,7 @@
 // All patches:
 // movestack, uselessgap (improved version), focusonclick (fixed),
 // urgentborder, selfrestart (customized), focusurgent (custom),
-// center (custom), restart (custom), moveresize
+// center (custom), restart (custom)
 
 // TODO:
 // mod4+n/mod4+shift+n - minimize/restore windows
@@ -47,9 +47,6 @@
 
 // Center window function
 #include "center.c"
-
-// Resize / Move functions
-#include "moveresize.c"
 
 /* appearance */
 static const char font[]            = "-*-terminus-medium-r-*-*-12-*-*-*-*-*-*-*";
@@ -196,27 +193,6 @@ static Key keys[] = {
 
 	// If togglemaximize is enabled:
 	//{ MODKEY,                       XK_m,      togglemaximize, {0} },
-
-#if 0
-	{ MODKEY,                       XK_Down,   moveresize,     {.v = (int []){ 0, 50, 0, 0 }}},
-	{ MODKEY,                       XK_Up,     moveresize,     {.v = (int []){ 0, -50, 0, 0 }}},
-	{ MODKEY,                       XK_Right,  moveresize,     {.v = (int []){ 50, 0, 0, 0 }}},
-	{ MODKEY,                       XK_Left,   moveresize,     {.v = (int []){ -50, 0, 0, 0 }}},
-	{ MODKEY|ShiftMask,             XK_Down,   moveresize,     {.v = (int []){ 0, 0, 0, 50 }}},
-	{ MODKEY|ShiftMask,             XK_Up,     moveresize,     {.v = (int []){ 0, 0, 0, -50 }}},
-	{ MODKEY|ShiftMask,             XK_Right,  moveresize,     {.v = (int []){ 0, 0, 50, 0 }}},
-	{ MODKEY|ShiftMask,             XK_Left,   moveresize,     {.v = (int []){ 0, 0, -50, 0 }}},
-#endif
-
-	{ MODKEY,                       XK_Left,   moveresize,     {.v = "-50x 0y 0w 0h" } },
-	{ MODKEY,                       XK_Right,  moveresize,     {.v = "50x 0y 0w 0h" } },
-	{ MODKEY,                       XK_Down,   moveresize,     {.v = "0x 50y 0w 0h" } },
-	{ MODKEY,                       XK_Up,     moveresize,     {.v = "0x -50y 0w 0h" } },
-
-	{ MODKEY|ShiftMask,             XK_Left,   moveresize,     {.v = "0x 0y -50w 0h" } },
-	{ MODKEY|ShiftMask,             XK_Right,  moveresize,     {.v = "0x 0y 50w 0h" } },
-	{ MODKEY|ShiftMask,             XK_Down,   moveresize,     {.v = "0x 0y 0w 50h" } },
-	{ MODKEY|ShiftMask,             XK_Up,     moveresize,     {.v = "0x 0y 0w -50h" } },
 };
 
 /* button definitions */
