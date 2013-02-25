@@ -3,7 +3,7 @@
 // All patches:
 // movestack, uselessgap (improved version), focusonclick (fixed),
 // urgentborder, selfrestart (customized), focusurgent (custom),
-// center (custom), restart (custom), resizemove (custom)
+// center (custom), restart (custom)
 
 // TODO:
 // mod4+n/mod4+shift+n - minimize/restore windows
@@ -47,9 +47,6 @@
 
 // Center window function
 #include "center.c"
-
-// Resize / Move functions
-#include "resizemove.c"
 
 /* appearance */
 static const char font[]            = "-*-terminus-medium-r-*-*-12-*-*-*-*-*-*-*";
@@ -196,16 +193,6 @@ static Key keys[] = {
 
 	// If togglemaximize is enabled:
 	//{ MODKEY,                       XK_m,      togglemaximize, {0} },
-
-	// Resizing / Moving
-	{ MODKEY,                       XK_Up,     size_up,        {0} },
-	{ MODKEY,                       XK_Left,   size_left,      {0} },
-	{ MODKEY,                       XK_Down,   size_down,      {0} },
-	{ MODKEY,                       XK_Right,  size_right,     {0} },
-	{ MODKEY|ShiftMask,             XK_Up,     move_up,        {0} },
-	{ MODKEY|ShiftMask,             XK_Left,   move_left,      {0} },
-	{ MODKEY|ShiftMask,             XK_Down,   move_down,      {0} },
-	{ MODKEY|ShiftMask,             XK_Right,  move_right,     {0} },
 };
 
 /* button definitions */
