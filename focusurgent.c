@@ -9,6 +9,7 @@ focusurgent(const Arg *arg) {
 				Arg a = {.ui = c->tags};
 				view(&a);
 				focus(c);
+				return;
 			}
 		}
 	}
