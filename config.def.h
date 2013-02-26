@@ -3,6 +3,7 @@
 // All patches:
 // movestack, uselessgap (improved version), focusonclick (fixed),
 // urgentborder, focusurgent (custom), center (custom), restart (custom)
+// moveresize
 
 // TODO:
 // mod4+n/mod4+shift+n - minimize/restore windows
@@ -37,6 +38,9 @@
 // http://dwm.suckless.org/patches/selfrestart
 // http://dwm.suckless.org/patches/dwm-r1615-selfrestart.diff
 // #include "selfrestart.c"
+
+// http://dwm.suckless.org/patches/moveresize
+#include "moveresize.c"
 
 // Restart function
 #include "restart.c"
@@ -192,6 +196,18 @@ static Key keys[] = {
 
 	// If togglemaximize is enabled:
 	//{ MODKEY,                       XK_m,      togglemaximize, {0} },
+
+	// Resizing / Moving
+	{ MODKEY,                       XK_Down,   moveresize,     {.v = (int []){ 0, 50, 0, 0 }}},
+	{ MODKEY,                       XK_Up,     moveresize,     {.v = (int []){ 0, -50, 0, 0 }}},
+	{ MODKEY,                       XK_Right,  moveresize,     {.v = (int []){ 50, 0, 0, 0 }}},
+	{ MODKEY,                       XK_Left,   moveresize,     {.v = (int []){ -50, 0, 0, 0 }}},
+	{ MODKEY|ShiftMask,             XK_Down,   moveresize,     {.v = (int []){ 0, 0, 0, 50 }}},
+	{ MODKEY|ShiftMask,             XK_Up,     moveresize,     {.v = (int []){ 0, 0, 0, -50 }}},
+	{ MODKEY|ShiftMask,             XK_Right,  moveresize,     {.v = (int []){ 0, 0, 50, 0 }}},
+	{ MODKEY|ShiftMask,             XK_Left,   moveresize,     {.v = (int []){ 0, 0, -50, 0 }}},
+	{ MODKEY|ControlMask,           XK_Up,     moveresize,     {.v = (int []){ 0, 0, 50, 50 }}},
+	{ MODKEY|ControlMask,           XK_Down,   moveresize,     {.v = (int []){ 0, 0, -50, -50 }}},
 };
 
 /* button definitions */
