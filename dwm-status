@@ -514,6 +514,12 @@ main() {
     exit 0
   fi
 
+  if test "$1" = "msg"; then
+    shift
+    echo "$@" > ~/.dwm-msg
+    exit 0
+  fi
+
   interval="$1"
 
   while true; do
@@ -553,6 +559,11 @@ main() {
       echo -n " • "
       echo -n "${time}"
     )
+
+    if test -f ~/.dwm-msg; then
+      out="$(cat ~/.dwm-msg) • $out"
+      rm ~/.dwm-msg
+    fi
 
     xsetroot -name "$out"
 
