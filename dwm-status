@@ -473,6 +473,21 @@ get_music() {
 }
 
 #
+# Status Message
+#
+
+msg=
+get_msg() {
+  local _msg=
+  if test -f ~/.dwm-msg; then
+    _msg="$(cat ~/.dwm-msg)"
+    rm ~/.dwm-msg
+  fi
+  ret="$_msg"
+  msg="$_msg"
+}
+
+#
 # Timer
 # To use a longer timer in main():
 #  timer $((2 * 60 * 60)) get_weather
@@ -535,8 +550,13 @@ main() {
     get_vol Capture mute && cap_mute="$ret"
     get_battery
     get_time
+    timer 5 get_msg
 
     out=$(
+      if test -n "$msg"; then
+        echo -n "${msg}"
+        echo -n " • "
+      fi
       echo -n "${cpu}%"
       echo -n " "
       echo -n "${temp}°C"
@@ -559,11 +579,6 @@ main() {
       echo -n " • "
       echo -n "${time}"
     )
-
-    if test -f ~/.dwm-msg; then
-      out="$(cat ~/.dwm-msg) • $out"
-      rm ~/.dwm-msg
-    fi
 
     xsetroot -name "$out"
 
