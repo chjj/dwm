@@ -10,3 +10,11 @@ togglemaximize(const Arg *arg) {
 	setlayout(&a);
 	maximized ^= 1;
 }
+
+void
+togglefullscreen(const Arg *arg) {
+	Arg a = {0};
+	togglemaximize(&a);
+	selmon->showbar = maximized;
+	togglebar(&a);
+}
