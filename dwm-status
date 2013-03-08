@@ -147,7 +147,7 @@ get__swap() {
 # See also:
 #  $ netstat -t -s
 #  $ lsof -Pn1 +M -i4
-#  $ ss
+#  $ ss -t
 #  /proc/net/sockstat
 #  /proc/net/sockstat6
 #  /proc/net/tcp
@@ -159,7 +159,6 @@ get_sockets() {
   local _sockets=$(cat /proc/net/sockstat \
     | grep -m 1 -o "inuse [0-9]*" \
     | grep -o "[0-9]*")
-  _sockets=$((_sockets - 1))
   ret="$_sockets"
   sockets="$_sockets"
 }
