@@ -11,7 +11,7 @@
 // https://github.com/vodik/dwm/commit/74cebfa997815ac0dce34934a5626414d3c8553a
 // http://ompldr.org/vY2s2Mg/gaps.diff
 // https://bbs.archlinux.org/viewtopic.php?pid=1050873#p1050873
-#define USELESS_GAP 0
+#define USELESS_GAP 1
 
 // http://dwm.suckless.org/patches/focusonclick
 // http://dwm.suckless.org/patches/dwm-6.0-focusonclick.diff
