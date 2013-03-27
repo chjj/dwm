@@ -144,6 +144,7 @@ static const char *startcmd[]     = { "dwm-start", "menu", "-b", "-p", ">",
 static const char *clipcmd[]      = { "sh", "-c", "xsel -c -p && xsel -c -s && xsel -c -b", NULL };
 static const char *transupcmd[]   = { "compton-trans", "-c", "+10", NULL };
 static const char *transdowncmd[] = { "compton-trans", "-c", "-10", NULL };
+//static const char *touchcmd[]     = { "sh", "-c", "synclient TouchpadOff=$(synclient -l | grep -c 'TouchpadOff.*=.*0')", NULL };
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -193,6 +194,7 @@ static Key keys[] = {
 	{ MODKEY,                       XK_u,      focusurgent,    {0} },
 	{ MODKEY,                       XK_c,      center,         {0} },
 	{ MODKEY,                       XK_g,      spawn,          {.v = clipcmd } },
+	//{ MODKEY,                       XK_a,      spawn,          {.v = touchcmd } },
 
 	// If togglemaximize is enabled:
 	//{ MODKEY,                       XK_m,      togglemaximize, {0} },
