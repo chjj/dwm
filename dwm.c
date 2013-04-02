@@ -1203,24 +1203,8 @@ manage(Window w, XWindowAttributes *wa) {
 	XMapWindow(dpy, c->win);
 	focus(NULL);
 
-#if 0
-	XClassHint ch = { NULL, NULL };
-	XGetClassHint(dpy, c->win, &ch);
-	const char *class = ch.res_class ? ch.res_class : broken;
-	// if (strstr(class, "MPlayer")) {
-	if (strcmp(class, "MPlayer") == 0) {
-		// focus(c);
-		// focus(c);
-		focus(c);
-		XSetWindowBorder(dpy, c->win, dc.sel[ColBorder]);
-	}
-	if (ch.res_class) XFree(ch.res_class);
-	if (ch.res_name) XFree(ch.res_name);
-#endif
-
+	/* fix the mplayer border */
 	if (c->isfloating) {
-		// focus(c);
-		// focus(c);
 		focus(c);
 		XSetWindowBorder(dpy, c->win, dc.sel[ColBorder]);
 	}
