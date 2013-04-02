@@ -1206,8 +1206,8 @@ manage(Window w, XWindowAttributes *wa) {
 #if FIX_MPLAYER
 	/* fix the mplayer border */
 	if (c->isfloating) {
-		focus(c);
-		XSetWindowBorder(dpy, c->win, dc.sel[ColBorder]);
+		int i = 5;
+		while (i--) focus(c);
 	}
 #endif
 }
