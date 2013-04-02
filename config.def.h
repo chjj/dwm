@@ -85,12 +85,12 @@ static const Rule rules[] = {
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class      instance    title       tags mask     isfloating   monitor  callback */
-	{ "qemu-system-x86_64", NULL, NULL,   0,            True,        -1,      NULL },
-	{ "MPlayer",  NULL,       NULL,       0,            True,        -1,      NULL },
-	{ "Skype",    NULL,       NULL,       0,            False,       -1,      NULL },
-	{ "XClock",   NULL,       NULL,       0,            True,        -1,      NULL },
-	{ "feh",      NULL,       NULL,       0,            True,        -1,      NULL },
+	/* class      instance    title       tags mask     isfloating   monitor */
+	{ "qemu-system-x86_64", NULL, NULL,   0,            True,        -1 },
+	{ "MPlayer",  NULL,       NULL,       0,            True,        -1 },
+	{ "Skype",    NULL,       NULL,       0,            False,       -1 },
+	{ "XClock",   NULL,       NULL,       0,            True,        -1 },
+	{ "feh",      NULL,       NULL,       0,            True,        -1 },
 };
 
 /* layout(s) */

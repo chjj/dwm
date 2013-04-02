@@ -99,7 +99,6 @@ struct Client {
 	Client *snext;
 	Monitor *mon;
 	Window win;
-	//void (*callback)(Client *c);
 };
 
 typedef struct {
@@ -163,7 +162,6 @@ typedef struct {
 	unsigned int tags;
 	Bool isfloating;
 	int monitor;
-	void (*callback)(Client *c);
 } Rule;
 
 /* function declarations */
@@ -333,10 +331,6 @@ applyrules(Client *c) {
 			for(m = mons; m && m->num != r->monitor; m = m->next);
 			if(m)
 				c->mon = m;
-			if (r->callback != NULL) {
-				(*r->callback)(c);
-			}
-			//c->callback = r->callback;
 		}
 	}
 	if(ch.res_class)
@@ -1208,10 +1202,6 @@ manage(Window w, XWindowAttributes *wa) {
 	arrange(c->mon);
 	XMapWindow(dpy, c->win);
 	focus(NULL);
-	//if (c->callback != NULL) {
-	//	(*c->callback)(c);
-	//	c->callback = NULL;
-	//}
 }
 
 void
