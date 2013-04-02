@@ -21,4 +21,7 @@
 // http://dwm.suckless.org/patches/urgentborder
 // http://dwm.suckless.org/patches/dwm-5.7.2-urgentborder.diff
 #define URGENT_BORDER 1
+
+// fix mplayer border on focus
+#define FIX_MPLAYER 1
 #endif

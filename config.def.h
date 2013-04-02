@@ -3,7 +3,7 @@
 // All patches:
 // movestack, uselessgap (improved version), focusonclick (fixed),
 // urgentborder, focusurgent (custom), center (custom), restart (custom)
-// moveresize
+// moveresize, fixmplayer (custom)
 
 // TODO:
 // mod4+n/mod4+shift+n - minimize/restore windows
