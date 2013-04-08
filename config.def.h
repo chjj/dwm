@@ -57,12 +57,7 @@ static const char font[]            = "-*-terminus-medium-r-*-*-12-*-*-*-*-*-*-*
 static const char normbordercolor[] = "#222222";
 static const char normbgcolor[]     = "#000000";
 static const char normfgcolor[]     = "#aaaaaa";
-//static const char selbordercolor[]  = "#535d6c"; // #222222 for norm
-//static const char selbordercolor[]  = "#e3dbab"; // #222222 for norm
-//static const char selbordercolor[]  = "#444444"; // #212121 for norm
-//static const char selbordercolor[]  = "#333333"; // #222222 for norm - bad
-//static const char selbordercolor[]  = "#1c678c"; // #44484c for norm
-static const char selbordercolor[]  = "#535d6c";
+static const char selbordercolor[]  = "#606060";
 static const char selbgcolor[]      = "#000000";
 static const char selfgcolor[]      = "#ffffff";
 #if URGENT_BORDER
