@@ -472,6 +472,16 @@ get_music() {
 }
 
 #
+# Touchpad
+#
+
+touchpad=
+get_touchpad() {
+  touchpad=$(synclient -l | grep -q 'TouchpadOff.*=.*0' && echo 'T' || echo 'N')
+  ret="$touchpad"
+}
+
+#
 # Timer
 # To use a longer timer in main():
 #  timer $((2 * 60 * 60)) get_weather
