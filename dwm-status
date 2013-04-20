@@ -13,6 +13,12 @@
 ret=
 
 #
+# Timers Hash Table
+#
+
+declare -A timers
+
+#
 # CPU Usage
 # Based on: https://bbs.archlinux.org/viewtopic.php?pid=981274#p981274
 #
@@ -496,11 +502,13 @@ timer() {
 
   local tval=$(date +'%s')
   local lval=$(eval 'echo $l_'${name})
+  #local lval=${timers[$name]}
   test -z "$lval" && lval=0
 
   if test $((tval - lval)) -gt $interval; then
     "$name" "$@"
     eval l_${name}="'$tval'"
+    #timers[$name]="$tval"
     return 0
   fi
 
