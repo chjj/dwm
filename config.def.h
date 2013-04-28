@@ -136,7 +136,7 @@ static const char *volupcmd[]     = { "amixer", "set", "Master", "5%+", NULL };
 static const char *voltogglecmd[] = { "amixer", "set", "Master", "toggle", NULL };
 static const char *captogglecmd[] = { "amixer", "set", "Capture", "toggle", NULL };
 //static const char *pastecmd[]     = { "xdotool", "click", "2", NULL };
-static const char *pastecmd[]     = { "sh", "-c", "sleep 0.2s && xdotool type \"$(xsel -o -p)\"", NULL };
+static const char *pastecmd[]     = { "sh", "-c", "sleep 0.2s && xdotool type --delay 0ms \"$(xsel -o -p)\"", NULL };
 static const char *scrotcmd[]     = { "scrot", "-e", "mv $f ~/screenshots", NULL };
 static const char *startcmd[]     = { "dwm-start", "menu", "-b", "-p", ">",
                                       "-fn", font, "-nb", normbgcolor,
