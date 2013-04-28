@@ -36,8 +36,8 @@ get_cpu() {
     || _cpu=0
   prevtotal=$total
   previdle=$idle
-  ret="$_cpu"
-  cpu="$_cpu"
+  ret=$_cpu
+  cpu=$_cpu
 }
 
 #
@@ -51,8 +51,8 @@ get_temp() {
   local _temp
   read _temp < /sys/class/thermal/thermal_zone0/temp
   _temp=$((_temp / 1000))
-  ret="$_temp"
-  temp="$_temp"
+  ret=$_temp
+  temp=$_temp
 }
 
 #
@@ -64,11 +64,11 @@ load=
 get_load() {
   local _load
   _load=$(cat /proc/loadavg | awk '{ print $1 " " $2 " " $3 }')
-  if test "$1" = "first"; then
+  if test "$1" = 'first'; then
     _load=$(echo "$_load" | awk '{ print $1 }')
   fi
-  ret="$_load"
-  load="$_load"
+  ret=$_load
+  load=$_load
 }
 
 #
@@ -80,13 +80,13 @@ get_mem() {
   local cur=$(free -m | grep cache: | awk '{ print $3 }')
   local max=$(free -m | grep Mem | awk '{ print $2 }')
   local _mem
-  if test "$1" != "perc"; then
+  if test "$1" != 'perc'; then
     _mem="$cur/$max"
   else
     _mem=$((cur * 100 / max))
   fi
-  ret="$_mem"
-  mem="$_mem"
+  ret=$_mem
+  mem=$_mem
 }
 
 # Based on: https://bbs.archlinux.org/viewtopic.php?pid=981274#p981274
@@ -94,20 +94,20 @@ get__mem() {
   local max cur type size kb _mem
 
   while read type size kb; do
-    test $type = "MemTotal:" && max=$size && cur=$max
-    test $type = "MemFree:" && cur=$((cur - size))
-    test $type = "Buffers:" && cur=$((cur - size))
-    test $type = "Cached:" && cur=$((cur - size))
+    test $type = 'MemTotal:' && max=$size && cur=$max
+    test $type = 'MemFree:' && cur=$((cur - size))
+    test $type = 'Buffers:' && cur=$((cur - size))
+    test $type = 'Cached:' && cur=$((cur - size))
   done < /proc/meminfo
 
-  if test "$1" != "perc"; then
+  if test "$1" != 'perc'; then
     _mem="$cur/$max"
   else
     _mem=$((cur * 100 / max))
   fi
 
-  ret="$_mem"
-  mem="$_mem"
+  ret=$_mem
+  mem=$_mem
 }
 
 #
@@ -119,13 +119,13 @@ get_swap() {
   local cur=$(free -m | grep Swap | awk '{ print $3 }')
   local max=$(free -m | grep Swap | awk '{ print $2 }')
   local _swap
-  if test "$1" != "perc"; then
+  if test "$1" != 'perc'; then
     _swap="$cur/$max"
   else
     _swap=$((cur * 100 / max))
   fi
-  ret="$_swap"
-  swap="$_swap"
+  ret=$_swap
+  swap=$_swap
 }
 
 # Based on: https://bbs.archlinux.org/viewtopic.php?pid=981274#p981274
@@ -133,19 +133,19 @@ get__swap() {
   local max cur type size kb _swap
 
   while read type size kb; do
-    test $type = "SwapTotal:" && max=$size && cur=$max
-    test $type = "SwapFree:" && cur=$((cur - size))
-    test $type = "SwapCached:" && cur=$((cur - size))
+    test $type = 'SwapTotal:' && max=$size && cur=$max
+    test $type = 'SwapFree:' && cur=$((cur - size))
+    test $type = 'SwapCached:' && cur=$((cur - size))
   done < /proc/meminfo
 
-  if test "$1" != "perc"; then
+  if test "$1" != 'perc'; then
     _swap="$cur/$max"
   else
     _swap=$((cur * 100 / max))
   fi
 
-  ret="$_swap"
-  swap="$_swap"
+  ret=$_swap
+  swap=$_swap
 }
 
 #
@@ -163,10 +163,10 @@ get__swap() {
 sockets=
 get_sockets() {
   local _sockets=$(cat /proc/net/sockstat \
-    | grep -m 1 -o "inuse [0-9]*" \
-    | grep -o "[0-9]*")
-  ret="$_sockets"
-  sockets="$_sockets"
+    | grep -m 1 -o 'inuse [0-9]*' \
+    | grep -o '[0-9]*')
+  ret=$_sockets
+  sockets=$_sockets
 }
 
 #
@@ -187,8 +187,8 @@ get_down() {
   test $oldtotaldown -ne 0 \
     && _down=$(((totaldown - oldtotaldown) / 1024)) || _down=0
   oldtotaldown=$totaldown
-  ret="$_down"
-  down="$_down"
+  ret=$_down
+  down=$_down
 }
 
 #
@@ -209,8 +209,8 @@ get_up() {
   test $oldtotalup -ne 0 \
     && _up=$(((totalup - oldtotalup) / 1024)) || _up=0
   oldtotalup=$totalup
-  ret="$_up"
-  up="$_up"
+  ret=$_up
+  up=$_up
 }
 
 #
@@ -219,9 +219,9 @@ get_up() {
 
 time=
 get_time() {
-  local _time=$(date +"%a, %b %e - %l:%M%P" | sed 's/-  /- /')
-  ret="$_time"
-  time="$_time"
+  local _time=$(date '+%a, %b %e - %l:%M%P' | sed 's/-  /- /')
+  ret=$_time
+  time=$_time
 }
 
 #
@@ -232,8 +232,8 @@ get_time() {
 uptime=
 get_uptime() {
   local _uptime=$(uptime | awk '{ print $3 " " $4 }' | sed 's/,//')
-  ret="$_uptime"
-  uptime="$_uptime"
+  ret=$_uptime
+  uptime=$_uptime
 }
 
 #
@@ -244,8 +244,8 @@ tasks=
 get_tasks() {
   local _tasks=$(ps -e | wc -l)
   _tasks=$((_tasks - 1))
-  ret="$_tasks"
-  tasks="$_tasks"
+  ret=$_tasks
+  tasks=$_tasks
 }
 
 #
@@ -255,9 +255,9 @@ get_tasks() {
 
 root=
 get_root() {
-  local _root=$(df -h | grep -m 1 " /$" | awk '{ print $5 }')
-  ret="$_root"
-  root="$_root"
+  local _root=$(df -h | grep -m 1 ' /$' | awk '{ print $5 }')
+  ret=$_root
+  root=$_root
 }
 
 #
@@ -267,9 +267,9 @@ get_root() {
 
 home=
 get_home() {
-  local _home=$(df -h | grep -m 1 "/home$" | awk '{ print $5 }')
-  ret="$_home"
-  home="$_home"
+  local _home=$(df -h | grep -m 1 '/home$' | awk '{ print $5 }')
+  ret=$_home
+  home=$_home
 }
 
 #
@@ -281,8 +281,8 @@ get_disks() {
   get_root "$@"
   get_home "$@"
   local _disks="$root $home"
-  ret="$_disks"
-  disks="$_disks"
+  ret=$_disks
+  disks=$_disks
 }
 
 #
@@ -292,8 +292,8 @@ get_disks() {
 gputemp=
 get_gputemp() {
   local _gputemp=$(nvidia-settings -tq gpucoretemp)
-  ret="$_gputemp"
-  gputemp="$_gputemp"
+  ret=$_gputemp
+  gputemp=$_gputemp
 }
 
 #
@@ -305,15 +305,15 @@ get_gputemp() {
 
 weather=
 get_weather() {
-  local woeid="$1"
+  local woeid=$1
   test -z "$woeid" && woeid='12781722'
   local _weather=$(curl -s -A '' \
     "http://xml.weather.yahoo.com/forecastrss?w=${woeid}&u=f" \
     | grep -A 1 'Current Conditions' \
     | tail -n 1 \
     | sed 's/<[^>]\+>//g')
-  ret="$_weather"
-  weather="$_weather"
+  ret=$_weather
+  weather=$_weather
 }
 
 #
@@ -328,10 +328,10 @@ get_addr() {
   if test -n "$1"; then
     _addr=$(ip -f inet addr show "$1" | tail -n 1 | awk '{ print $2 }')
   else
-    _addr=$(ip addr | grep -m 1 "inet.*\(eth0\|wlan0\)" | awk '{ print $2 }')
+    _addr=$(ip addr | grep -m 1 'inet.*\(eth0\|wlan0\)' | awk '{ print $2 }')
   fi
-  ret="$_addr"
-  addr="$_addr"
+  ret=$_addr
+  addr=$_addr
 }
 
 #
@@ -340,41 +340,41 @@ get_addr() {
 
 vol=
 get_vol() {
-  local mixer="Master"
-  test -n "$1" && mixer="$1"
+  local mixer='Master'
+  test -n "$1" && mixer=$1
   local data=$(amixer get "$mixer")
-  local _vol=$(echo "$data" | grep -m 1 -o "[0-9]\+%" | sed 's/%//')
-  local mute=$(echo "$data" | grep -m 1 -o "\[off\]")
+  local _vol=$(echo "$data" | grep -m 1 -o '[0-9]\+%' | sed 's/%//')
+  local mute=$(echo "$data" | grep -m 1 -o '\[off\]')
   local state
 
-  if test -z "$mute" -a "$_vol" = "0" -o -n "$mute"; then
-    state="off"
+  if test -z "$mute" -a "$_vol" = '0' -o -n "$mute"; then
+    state='off'
   else
-    state="on"
+    state='on'
   fi
 
   case "$state" in
     on)
-      #state=""
-      state="♫"
-      if test "$2" = "mute"; then
-        ret=""
+      #state=''
+      state='♫'
+      if test "$2" = 'mute'; then
+        ret=''
         return 0
       fi
     ;;
     off | *)
-      state="M"
-      #state="♩"
-      if test "$2" = "mute"; then
-        ret="$state"
+      state='M'
+      #state='♩'
+      if test "$2" = 'mute'; then
+        ret=$state
         return 0
       fi
     ;;
   esac
 
   _vol="$_vol%$state"
-  ret="$_vol"
-  vol="$_vol"
+  ret=$_vol
+  vol=$_vol
 }
 
 #
@@ -392,8 +392,8 @@ get_vol() {
 ip=
 get_ip() {
   local _ip=$(curl -s -A '' icanhazip.com)
-  ret="$_ip"
-  ip="$_ip"
+  ret=$_ip
+  ip=$_ip
 }
 
 #
@@ -410,37 +410,37 @@ get_battery() {
   local status=$(cat /sys/class/power_supply/BAT0/status)
   case "$status" in
     Full)
-      #status="↯"
-      status="F"
+      #status='↯'
+      status='F'
     ;;
     Charged)
-      #status="↯"
-      status="C"
+      #status='↯'
+      status='C'
     ;;
     Charging)
-      status="+"
+      status='+'
     ;;
     Discharging)
-      status="-"
+      status='-'
     ;;
     Unknown | *)
-      #status="⌁"
-      status="?"
+      #status='⌁'
+      status='?'
     ;;
   esac
   _battery="$_battery%$status"
-  ret="$_battery"
-  battery="$_battery"
+  ret=$_battery
+  battery=$_battery
 }
 
 get__battery() {
   local data=$(acpi)
-  local _battery=$(echo "$data" | grep -m 1 -o "[0-9]\+%" | sed 's/%//')
+  local _battery=$(echo "$data" | grep -m 1 -o '[0-9]\+%' | sed 's/%//')
   local status=$(echo "$data" | sed 's/^.* \([a-zA-Z]\+\),.*$/\1/')
   status=$(echo "$status" | sed 's/^\(.\).*$/\1/')
   _battery="$_battery%$status"
-  ret="$_battery"
-  battery="$_battery"
+  ret=$_battery
+  battery=$_battery
 }
 
 #
@@ -451,8 +451,8 @@ music=
 get_music() {
   local data=$(mocp -i 2> /dev/null)
   if test -z "$data" || echo "$data" | grep -q 'State: STOP'; then
-    ret="none"
-    music="$ret"
+    ret='none'
+    music=$ret
     return 1
   fi
   local title=$(echo "$data" | grep '^SongTitle: ' | sed 's/^SongTitle: //')
@@ -469,8 +469,8 @@ get_music() {
     test -n "$cur" && left="+$cur"
   fi
   local _music="$title - $left"
-  ret="$_music"
-  music="$_music"
+  ret=$_music
+  music=$_music
 }
 
 #
@@ -480,7 +480,7 @@ get_music() {
 touchpad=
 get_touchpad() {
   touchpad=$(synclient -l | grep -q 'TouchpadOff.*=.*0' && echo 'T' || echo 'N')
-  ret="$touchpad"
+  ret=$touchpad
 }
 
 #
@@ -491,12 +491,12 @@ get_touchpad() {
 #
 
 timer() {
-  local interval="$1"
-  local name="$2"
+  local interval=$1
+  local name=$2
   shift
   shift
 
-  local tval=$(date +'%s')
+  local tval=$(date '+%s')
   local lval=$(eval 'echo $l_'${name})
   #local lval=${timers[$name]}
   test -z "$lval" && lval=0
@@ -504,7 +504,7 @@ timer() {
   if test $((tval - lval)) -gt $interval; then
     "$name" "$@"
     eval l_${name}="'$tval'"
-    #timers[$name]="$tval"
+    #timers[$name]=$tval
     return 0
   fi
 
@@ -518,7 +518,7 @@ timer() {
 main() {
   local out interval
 
-  if test "$1" = "get"; then
+  if test "$1" = 'get'; then
     local cmd=$2
     shift
     shift
@@ -527,13 +527,13 @@ main() {
     exit 0
   fi
 
-  if test "$1" = "msg"; then
+  if test "$1" = 'msg'; then
     shift
     echo "$@" > ~/.dwm-msg
     exit 0
   fi
 
-  interval="$1"
+  interval=$1
 
   while true; do
     get_cpu
@@ -545,31 +545,31 @@ main() {
     get_down
     get_up
     get_vol Master
-    get_vol Capture mute && cap_mute="$ret"
+    get_vol Capture mute && cap_mute=$ret
     get_battery
     get_time
 
     out=$(
       echo -n "${cpu}%"
-      echo -n " "
+      echo -n ' '
       echo -n "${temp}°C"
-      echo -n " "
+      echo -n ' '
       echo -n "${load}"
-      echo -n " • "
+      echo -n ' • '
       echo -n "${mem}%"
-      echo -n "+"
+      echo -n '+'
       echo -n "${swap}%"
-      echo -n " • "
+      echo -n ' • '
       echo -n "${sockets}s"
-      echo -n " "
+      echo -n ' '
       echo -n "${down}d"
-      echo -n " "
+      echo -n ' '
       echo -n "${up}u"
-      echo -n " • "
+      echo -n ' • '
       echo -n "${vol}${cap_mute}"
-      echo -n " • "
+      echo -n ' • '
       echo -n "${battery}"
-      echo -n " • "
+      echo -n ' • '
       echo -n "${time}"
     )
 
