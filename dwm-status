@@ -347,10 +347,6 @@ get_vol() {
   local mute=$(echo "$data" | grep -m 1 -o "\[off\]")
   local state
 
-  if test -z "$vol"; then
-    state="off"
-  fi
-
   if test -z "$mute" -a "$_vol" = "0" -o -n "$mute"; then
     state="off"
   else
