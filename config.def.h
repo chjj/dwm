@@ -142,8 +142,8 @@ static const char *startcmd[]     = { "dwm-start", "menu", "-b", "-p", ">",
                                       "-nf", normfgcolor, "-sb", selbgcolor,
                                       "-sf", selfgcolor, NULL };
 static const char *clipcmd[]      = { "sh", "-c", "xsel -c -p && xsel -c -s && xsel -c -b", NULL };
-static const char *transupcmd[]   = { "compton-trans", "-c", "+10", NULL };
-static const char *transdowncmd[] = { "compton-trans", "-c", "-10", NULL };
+static const char *transupcmd[]   = { "compton-trans", "-c", "-o", "+10", NULL };
+static const char *transdowncmd[] = { "compton-trans", "-c", "-o", "-10", NULL };
 static const char *touchcmd[]     = { "sh", "-c", "synclient TouchpadOff=$(synclient -l | grep -c 'TouchpadOff.*=.*0')", NULL };
 
 static Key keys[] = {
