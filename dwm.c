@@ -2245,6 +2245,9 @@ main(int argc, char *argv[]) {
 	checkotherwm();
 	setup();
 	scan();
+#ifdef AUTOSTART
+	AUTOSTART;
+#endif
 	run();
 	cleanup();
 	XCloseDisplay(dpy);

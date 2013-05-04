@@ -3,7 +3,7 @@
 // All patches:
 // movestack, uselessgap (improved version), focusonclick (fixed),
 // urgentborder, focusurgent (custom), center (custom), restart (custom)
-// moveresize, fixmplayer (custom)
+// moveresize, fixmplayer (custom), autostart (custom)
 
 // TODO:
 // mod4+n/mod4+shift+n - minimize/restore windows
@@ -50,6 +50,9 @@
 
 // Center window function
 #include "center.c"
+
+// Autostart script
+#define AUTOSTART system("cd ~/dwm && ./autostart &")
 
 /* appearance */
 static const char font[]            = "-*-terminus-medium-r-*-*-12-*-*-*-*-*-*-*";
