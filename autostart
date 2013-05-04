@@ -1,3 +1,5 @@
 #!/bin/bash
 
 compton --config ~/.compton.conf -b
+# compton --config <(echo) --vsync drm -b
+# compton --config <(echo) --backend glx --vsync opengl-swc -b
