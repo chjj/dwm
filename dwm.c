@@ -2245,8 +2245,8 @@ main(int argc, char *argv[]) {
 	checkotherwm();
 	setup();
 	scan();
-#ifdef AUTOSTART
-	AUTOSTART;
+#if AUTOSTART
+	system("cd ~/dwm && ./autostart &");
 #endif
 	run();
 	cleanup();

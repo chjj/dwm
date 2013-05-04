@@ -51,9 +51,6 @@
 // Center window function
 #include "center.c"
 
-// Autostart script
-#define AUTOSTART system("cd ~/dwm && ./autostart &")
-
 /* appearance */
 static const char font[]            = "-*-terminus-medium-r-*-*-12-*-*-*-*-*-*-*";
 

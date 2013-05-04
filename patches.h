@@ -24,4 +24,8 @@
 
 // fix mplayer border on focus
 #define FIX_MPLAYER 1
+
+// Run autostart script
+// Similar patch: http://dwm.suckless.org/patches/autostart
+#define AUTOSTART 0
 #endif
