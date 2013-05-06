@@ -144,6 +144,7 @@ static const char *startcmd[]     = { "dwm-start", "menu", "-b", "-p", ">",
 static const char *clipcmd[]      = { "sh", "-c", "xsel -c -p && xsel -c -s && xsel -c -b", NULL };
 static const char *transupcmd[]   = { "compton-trans", "-c", "-o", "+10", NULL };
 static const char *transdowncmd[] = { "compton-trans", "-c", "-o", "-10", NULL };
+static const char *transdelcmd[]  = { "compton-trans", "-c", "-d", NULL };
 static const char *touchcmd[]     = { "sh", "-c", "synclient TouchpadOff=$(synclient -l | grep -c 'TouchpadOff.*=.*0')", NULL };
 
 static Key keys[] = {
@@ -231,4 +232,5 @@ static Button buttons[] = {
 	// Custom:
 	{ ClkClientWin,         MODKEY,         Button4,        spawn,          {.v = transupcmd } },
 	{ ClkClientWin,         MODKEY,         Button5,        spawn,          {.v = transdowncmd } },
+	//{ ClkClientWin,         MODKEY,         Button3,        spawn,          {.v = transdelcmd } },
 };
