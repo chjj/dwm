@@ -518,6 +518,7 @@ timer() {
 main() {
   local out interval
 
+  # Get a certain value.
   if test "$1" = 'get'; then
     local cmd=$2
     shift
@@ -527,11 +528,18 @@ main() {
     exit 0
   fi
 
+  # Display message on the status bar.
   if test "$1" = 'msg'; then
     shift
     echo "$@" > ~/.dwm-msg
     exit 0
   fi
+
+  # Daemonize the process.
+  # if test -z "$DWM_STATUS_DAEMONIZED"; then
+  #   (DWM_STATUS_DAEMONIZED=1 setsid "$0" "$@" > /dev/null 2>& 1 &)
+  #   exit 0
+  # fi
 
   interval=$1
 
