@@ -1,5 +1,9 @@
 #!/bin/bash
 
-compton --config ~/.compton.conf -b
+# compton --config ~/.compton.conf -b
 # compton --config <(echo) --vsync drm -b
 # compton --config <(echo) --backend glx --vsync opengl-swc -b
+# conky | while read -r; do xsetroot -name "$REPLY"; done &
+killall dwm-status > /dev/null 2>& 1
+dwm-status 3s &
+dwm-start wallpaper
