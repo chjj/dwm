@@ -30,6 +30,10 @@
 // Statusbar written in C
 // http://dwm.suckless.org/dwmstatus/
 
+// NOTE: Unused mod4 key combinations:
+// e, n, o, q, s, x, y, z, slash, bracketleft, bracketright,
+// semicolon, apostrophe, backslash, minus, equal, grave, Escape
+
 // http://dwm.suckless.org/patches/movestack
 // http://dwm.suckless.org/patches/movestack-5.8.2.diff
 // alternative: http://dwm.suckless.org/patches/push
