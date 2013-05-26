@@ -1,20 +1,17 @@
-static int maximized = 0;
-
 void
 togglemaximize(const Arg *arg) {
 	Arg a = {
-		.v = maximized
+		.v = selmon->lt[selmon->sellt] == &layouts[2]
 			? &layouts[0]
 			: &layouts[2]
 	};
 	setlayout(&a);
-	maximized ^= 1;
 }
 
 void
 togglefullscreen(const Arg *arg) {
 	Arg a = {0};
 	togglemaximize(&a);
-	selmon->showbar = maximized;
+	selmon->showbar = selmon->lt[selmon->sellt] == &layouts[0];
 	togglebar(&a);
 }
