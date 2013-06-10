@@ -60,38 +60,10 @@ static const char font[]            = "-*-terminus-medium-r-*-*-12-*-*-*-*-*-*-*
 
 static const char normbordercolor[] = "#222222";
 static const char normbgcolor[]     = "#000000";
-//static const char normfgcolor[]     = "#aaaaaa";
 static const char normfgcolor[]     = "#666666";
-
-// black: #1d1f21 / #1e1f21
-// static const char normbordercolor[] = "#222222";
-
-// white / grey: #aaaaaa #cccccc
-// static const char selbordercolor[]  = "#aaaaaa";
-// static const char selbordercolor[]  = "#cccccc";
-
-// green: #9dba3a
-// static const char selbordercolor[]  = "#9dba3a";
-// static const char selfgcolor[]      = "#9dba3a";
-
-// orange: #e04613
-// static const char selbordercolor[]  = "#e04613";
-// static const char selfgcolor[]      = "#e04613";
-
-// blue: #3465a4 #729fcf
-// static const char selbordercolor[]  = "#3465a4";
-// static const char selfgcolor[]      = "#3465a4";
-
-// red: #a54242 / #a54342
-// static const char selbordercolor[]  = "#a54242";
-// static const char selfgcolor[]      = "#a54242";
-
-// white: #eeeeee / #eeeeee
 static const char selbordercolor[]  = "#eeeeee";
-static const char selfgcolor[]      = "#eeeeee";
-
 static const char selbgcolor[]      = "#000000";
-//static const char selfgcolor[]      = "#ffffff";
+static const char selfgcolor[]      = "#eeeeee";
 #if URGENT_BORDER
 static const char urgbordercolor[]  = "#ff0000";
 #endif
