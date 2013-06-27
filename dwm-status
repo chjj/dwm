@@ -118,6 +118,11 @@ swap=
 get_swap() {
   local cur=$(free -m | grep Swap | awk '{ print $3 }')
   local max=$(free -m | grep Swap | awk '{ print $2 }')
+  if test $max -eq 0; then
+    ret=0
+    swap=0
+    return
+  fi
   local _swap
   if test "$1" != 'perc'; then
     _swap="$cur/$max"
