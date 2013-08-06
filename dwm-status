@@ -410,11 +410,17 @@ get_ip() {
 #
 
 battery=
-battery_full=$(cat /sys/class/power_supply/BAT0/energy_full_design)
+battery_f=$(cat /sys/class/power_supply/BAT0/energy_full_design 2> /dev/null \
+  || cat /sys/class/power_supply/BAT0/charge_full_design 2> /dev/null)
 get_battery() {
-  local battery_now=$(cat /sys/class/power_supply/BAT0/energy_now)
-  local _battery=$((battery_now * 100 / battery_full))
-  local status=$(cat /sys/class/power_supply/BAT0/status)
+  local _battery=0
+  local battery_n=$(cat /sys/class/power_supply/BAT0/energy_now 2> /dev/null \
+    || cat /sys/class/power_supply/BAT0/charge_now 2> /dev/null)
+  if test -n "$battery_n"; then
+    _battery=$((battery_n * 100 / battery_f))
+  fi
+  local status=$(cat /sys/class/power_supply/BAT0/status 2> /dev/null \
+    || echo 'Unknown')
   case "$status" in
     Full)
       #status='↯'
