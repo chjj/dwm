@@ -608,6 +608,33 @@ main() {
       echo -n "${battery}"
       echo -n ' • '
       echo -n "${time}"
+
+      #printf '%s%% %s°C %s • %s%%+%s%% • %ss %sd %su • %s%s • %s • %s' \
+      #  "${cpu}" \
+      #  "${temp}" \
+      #  "${load}" \
+      #  "${mem}" \
+      #  "${swap}" \
+      #  "${sockets}" \
+      #  "${down}" \
+      #  "${up}" \
+      #  "${vol}" \
+      #  "${cap_mute}" \
+      #  "${battery}" \
+      #  "${time}"
+
+      #printf '%s %s %s • %s+%s • %s %s %s • %s • %s • %s' \
+      #  "${cpu}%" \
+      #  "${temp}°C" \
+      #  "${load}" \
+      #  "${mem}%" \
+      #  "${swap}%" \
+      #  "${sockets}s" \
+      #  "${down}d" \
+      #  "${up}u" \
+      #  "${vol}${cap_mute}" \
+      #  "${battery}" \
+      #  "${time}"
     )
 
     if test -f ~/.dwm-msg; then
