@@ -49,7 +49,10 @@ get_cpu() {
 temp=
 get_temp() {
   local _temp
-  read _temp < /sys/class/thermal/thermal_zone0/temp
+  local f=$(find /sys/class/thermal -maxdepth 1 -name 'thermal_zone*' | sort -r | head -n 1)
+  read _temp < "${f}/temp"
+  #read _temp < /sys/class/thermal/thermal_zone0/temp
+  #read _temp < /sys/class/thermal/thermal_zone5/temp
   _temp=$((_temp / 1000))
   ret=$_temp
   temp=$_temp
@@ -159,6 +162,7 @@ get__swap() {
 #  $ netstat -t -s
 #  $ lsof -Pn1 +M -i4
 #  $ ss -t
+#  $ ss -t | grep ^ESTAB
 #  /proc/net/sockstat
 #  /proc/net/sockstat6
 #  /proc/net/tcp
@@ -399,6 +403,7 @@ get_vol() {
 ip=
 get_ip() {
   local _ip=$(curl -s -A '' icanhazip.com)
+  #local _ip=$(dig +short myip.opendns.com @resolver1.opendns.com)
   ret=$_ip
   ip=$_ip
 }
