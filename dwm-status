@@ -302,7 +302,31 @@ get_disks() {
 
 gputemp=
 get_gputemp() {
+  if which nvidia-settings > /dev/null 2>& 1; then
+    get_gputemp_nvidia
+  elif which aticonfig > /dev/null 2>& 1; then
+    get_gputemp_ati
+  else
+    gputemp='0°C'
+  fi
+}
+
+get_gputemp_nvidia() {
   local _gputemp=$(nvidia-settings -tq gpucoretemp)
+  ret=$_gputemp
+  gputemp=$_gputemp
+}
+
+get_gputemp_ati() {
+  # https://wiki.archlinux.org/index.php/AMD_Catalyst
+  local _gputemp=$(env \
+    DISPLAY=:0 \
+    WINDOWPATH=1 \
+    XAUTHORITY=${HOME}/.Xauthority \
+    aticonfig --odgt \
+    | tail -n 1 \
+    | grep -o '[0-9.]\+ C$' \
+    | sed 's/ /°/')
   ret=$_gputemp
   gputemp=$_gputemp
 }
