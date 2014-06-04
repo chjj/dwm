@@ -615,6 +615,8 @@ main() {
     get_battery
     get_time
 
+    # timer $((2 * 60 * 60)) get_weather
+
     out=$(
       echo -n "${cpu}%"
       echo -n ' '
@@ -635,6 +637,8 @@ main() {
       echo -n "${vol}${cap_mute}"
       echo -n ' • '
       echo -n "${battery}"
+      # echo -n ' • '
+      # echo -n "${weather}"
       echo -n ' • '
       echo -n "${time}"
     )
