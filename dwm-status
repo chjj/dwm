@@ -7,6 +7,12 @@
 #
 
 #
+# Constants
+#
+
+useragent='Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/34.0.1771.0 Safari/537.36'
+
+#
 # Global Return Value
 #
 
@@ -335,20 +341,63 @@ get_gputemp_ati() {
 # Weather
 # weather.yahoo.com
 # http://developer.yahoo.com/weather/
-# To find WOEID: http://weather.yahoo.com/
+# To find WOEID: https://weather.yahoo.com/
+# Search for: currentWoeid
 #
 
 weather=
 get_weather() {
-  local woeid=$1
-  test -z "$woeid" && woeid='12781722'
-  local _weather=$(curl -s -A '' \
+  local woeid
+
+  # Minnesota
+  # Saint Paul
+  # woeid='2487129'
+  # West St. Paul
+  # woeid='2517692'
+  # Invergrove Heights
+  # woeid='2427344'
+  # Mendota Heights
+  # woeid='2449415'
+  # SP / IGH / WSP - OLD
+  woeid='12781722'
+  # Minneapolis
+  # woeid='2452078'
+
+  # New York
+  # New York City
+  # woeid='2459115'
+
+  # California
+  # San Francisco
+  # woeid='2487956'
+  # Los Angeles
+  # woeid='2442047'
+
+  # Oregon
+  # Portland
+  # woeid='2475687'
+
+  test -n "$1" && woeid=$1
+
+  # Automatic:
+  # test -z "$woeid" && woeid=$(_get_woeid)
+
+  # curl substitute: wget -U "$useragent" -O - "$url" 2> /dev/null
+  local _weather=$(curl -s -A "$useragent" \
     "http://xml.weather.yahoo.com/forecastrss?w=${woeid}&u=f" \
     | grep -A 1 'Current Conditions' \
     | tail -n 1 \
-    | sed 's/<[^>]\+>//g')
+    | sed 's/<[^>]\+>//g' \
+    | sed 's/ F$/°F/')
   ret=$_weather
   weather=$_weather
+}
+
+_get_woeid() {
+  # curl substitute: wget -U "$useragent" -O - "$url" 2> /dev/null
+  curl -s -A "$useragent" 'https://weather.yahoo.com/' \
+    | grep -o 'currentWoeid \+:[^0-9,]\+\([0-9]\+\)[^0-9,]\+,' \
+    | grep -o '[0-9]\+'
 }
 
 #
@@ -426,7 +475,8 @@ get_vol() {
 
 ip=
 get_ip() {
-  local _ip=$(curl -s -A '' icanhazip.com)
+  # curl substitute: wget -U "$useragent" -O - "$url" 2> /dev/null
+  local _ip=$(curl -s -A "$useragent" icanhazip.com)
   #local _ip=$(dig +short myip.opendns.com @resolver1.opendns.com)
   ret=$_ip
   ip=$_ip
@@ -615,7 +665,8 @@ main() {
     get_battery
     get_time
 
-    # timer $((2 * 60 * 60)) get_weather
+    # timer $((24 * 60 * 60)) get_ip
+    timer $((2 * 60 * 60)) get_weather
 
     out=$(
       echo -n "${cpu}%"
@@ -633,12 +684,14 @@ main() {
       echo -n "${down}d"
       echo -n ' '
       echo -n "${up}u"
+      # echo -n ' • '
+      # echo -n "${ip}"
       echo -n ' • '
       echo -n "${vol}${cap_mute}"
       echo -n ' • '
       echo -n "${battery}"
-      # echo -n ' • '
-      # echo -n "${weather}"
+      echo -n ' • '
+      echo -n "${weather}"
       echo -n ' • '
       echo -n "${time}"
     )
