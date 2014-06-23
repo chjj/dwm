@@ -309,21 +309,21 @@ get_disks() {
 gputemp=
 get_gputemp() {
   if which nvidia-settings > /dev/null 2>& 1; then
-    get_gputemp_nvidia
+    _get_gputemp_nvidia
   elif which aticonfig > /dev/null 2>& 1; then
-    get_gputemp_ati
+    _get_gputemp_ati
   else
     gputemp='0°C'
   fi
 }
 
-get_gputemp_nvidia() {
+_get_gputemp_nvidia() {
   local _gputemp=$(nvidia-settings -tq gpucoretemp)
   ret=$_gputemp
   gputemp=$_gputemp
 }
 
-get_gputemp_ati() {
+_get_gputemp_ati() {
   # https://wiki.archlinux.org/index.php/AMD_Catalyst
   local _gputemp=$(env \
     DISPLAY=:0 \
@@ -376,6 +376,10 @@ get_weather() {
   # Oregon
   # Portland
   # woeid='2475687'
+
+  # Georgia
+  # Atlanta
+  # woeid='2357024'
 
   test -n "$1" && woeid=$1
 
@@ -610,6 +614,16 @@ timer() {
   test -z "$lval" && lval=0
 
   if test $((tval - lval)) -gt $interval; then
+    if test $lval -eq 0; then
+      # If it's the first iteration, wait a bit
+      # because it might fail due to the network
+      # not being up.
+      if ! ping -W 5 -c 1 google.com > /dev/null 2>& 1; then
+        sleep 5
+      fi
+      tval=$(date '+%s')
+    fi
+
     "$name" "$@"
     eval l_${name}="'$tval'"
     #timers[$name]=$tval
@@ -701,7 +715,13 @@ main() {
       rm ~/.dwm-msg
     fi
 
-    xsetroot -name "$out"
+    if test -n "$DISPLAY"; then
+      xsetroot -display "$DISPLAY" -name "$out"
+    else
+      if test -n "$interval"; then
+        printf '\r\x1b[K%s' "$out"
+      fi
+    fi
 
     if test -z "$interval"; then
       echo "$out"
