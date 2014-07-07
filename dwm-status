@@ -665,6 +665,15 @@ main() {
 
   interval=$1
 
+  # Make a fifo to read from fd for timeouts
+  # http://unix.stackexchange.com/questions/68236
+  tfifo=/tmp/dwm_status_sleep_fifo_353463524
+  rm -f $tfifo
+  mkfifo $tfifo
+  exec 200<> $tfifo
+
+  # enable -f /usr/lib/bash_sleep_builtin.so sleep
+
   while true; do
     get_cpu
     get_temp
@@ -728,7 +737,8 @@ main() {
       exit 0
     fi
 
-    sleep "$interval"
+    # sleep "$interval"
+    read -t "$interval" -u 200 _none
   done
 }
 
