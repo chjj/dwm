@@ -359,7 +359,7 @@ get_weather() {
   # Mendota Heights
   # woeid='2449415'
   # SP / IGH / WSP - OLD
-  woeid='12781722'
+  # woeid='12781722'
   # Minneapolis
   # woeid='2452078'
 
@@ -369,7 +369,7 @@ get_weather() {
 
   # California
   # San Francisco
-  # woeid='2487956'
+  woeid='2487956'
   # Los Angeles
   # woeid='2442047'
 
@@ -392,7 +392,9 @@ get_weather() {
     | grep -A 1 'Current Conditions' \
     | tail -n 1 \
     | sed 's/<[^>]\+>//g' \
-    | sed 's/ F$/°F/')
+    | sed 's/ F$/°F/' \
+    | xargs)
+  test -z "$_weather" && _weather='Unknown'
   ret=$_weather
   weather=$_weather
 }
@@ -618,9 +620,9 @@ timer() {
       # If it's the first iteration, wait a bit
       # because it might fail due to the network
       # not being up.
-      if ! ping -W 5 -c 1 google.com > /dev/null 2>& 1; then
-        sleep 5
-      fi
+      # if ! ping -W 5 -c 1 google.com > /dev/null 2>& 1; then
+      #   sleep 5
+      # fi
       tval=$(date '+%s')
     fi
 
@@ -638,7 +640,7 @@ timer() {
 #
 
 main() {
-  local out interval
+  local out interval checked_weather
 
   # Get a certain value.
   if test "$1" = 'get'; then
@@ -689,7 +691,16 @@ main() {
     get_time
 
     # timer $((24 * 60 * 60)) get_ip
+
     timer $((2 * 60 * 60)) get_weather
+
+    if test "$weather" = 'Unknown' -a -z "$checked_weather"; then
+      checked_weather=1
+      (
+        sleep 60
+        get_weather
+      ) &
+    fi
 
     out=$(
       echo -n "${cpu}%"
