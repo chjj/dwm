@@ -58,6 +58,9 @@
 /* appearance */
 static const char font[]            = "-*-terminus-medium-r-*-*-14-*-*-*-*-*-*-*";
 
+/* Macbook Pro Resolution */
+// static const char font[]            = "-*-terminus-medium-r-*-*-22-*-*-*-*-*-*-*";
+
 static const char normbordercolor[] = "#222222";
 static const char normbgcolor[]     = "#000000";
 static const char normfgcolor[]     = "#666666";
