@@ -231,6 +231,42 @@ get_up() {
 }
 
 #
+# SSID
+#
+
+ssid=
+get_ssid() {
+  local _ssid
+  if pidof NetworkManager > /dev/null 2>& 1; then
+    _ssid=$(_get_ssid_nm)
+  elif pidof wicd > /dev/null 2>& 1; then
+  # || test -n "$(ps aux | grep -q 'python.*wicd'
+    _ssid=$(_get_ssid_wicd)
+  else
+    _ssid='Unknown'
+  fi
+  ret=$_ssid
+  ssid=$_ssid
+}
+
+_get_ssid_nm() {
+  nmcli con status | sed -n 2p | awk '{ print $1 }'
+}
+
+_get_ssid_wicd() {
+  local w
+  w=$(wicd-cli -d --wireless 2> /dev/null)
+  if test $? -ne 0; then
+    w=$(wicd-cli -d --wired 2> /dev/null)
+  fi
+  if test $? -ne 0; then
+    echo 'Unknown'
+    return 1
+  fi
+  echo "$w" | grep '^Essid:' | awk '{ print $2 }'
+}
+
+#
 # Time
 #
 
@@ -685,6 +721,7 @@ main() {
     get_sockets
     get_down
     get_up
+    get_ssid
     get_vol Master
     get_vol Capture mute && cap_mute=$ret
     get_battery
@@ -697,7 +734,7 @@ main() {
     if test "$weather" = 'Unknown' -a -z "$checked_weather"; then
       checked_weather=1
       (
-        sleep 60
+        sleep 300
         get_weather
       ) &
     fi
@@ -718,6 +755,8 @@ main() {
       echo -n "${down}d"
       echo -n ' '
       echo -n "${up}u"
+      echo -n ' • '
+      echo -n "${ssid}"
       # echo -n ' • '
       # echo -n "${ip}"
       echo -n ' • '
