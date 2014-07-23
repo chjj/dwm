@@ -584,10 +584,19 @@ get__battery() {
 music=
 
 get_music() {
-  pidof mocp > /dev/null 2>& 1 && get_music_mocp || get_music_ncmpcpp
+  if pidof mocp > /dev/null 2>& 1; then
+    _get_music_mocp
+  elif pidof ncmpcpp > /dev/null 2>& 1; then
+    _get_music_ncmpcpp
+  elif pidof mpg123 > /dev/null 2>& 1; then
+    _get_music_mpg123
+  else
+    music='none'
+  fi
+  return $?
 }
 
-get_music_mocp() {
+_get_music_mocp() {
   local data=$(mocp -i 2> /dev/null)
   if test -z "$data" || echo "$data" | grep -q 'State: STOP'; then
     ret='none'
@@ -612,13 +621,24 @@ get_music_mocp() {
   music=$_music
 }
 
-get_music_ncmpcpp() {
+_get_music_ncmpcpp() {
   local _music=$(ncmpcpp --now-playing '{%a - %t}|{%f}{ - %l}' 2> /dev/null)
   if test -z "$_music"; then
     ret='none'
     music=$ret
     return 1
   fi
+  ret=$_music
+  music=$_music
+}
+
+_get_music_mpg123() {
+  local _music
+  _music=$(ps ax \
+    | grep -v grep \
+    | grep mpg123 \
+    | awk '{ print $6 }' \
+    | xargs basename)
   ret=$_music
   music=$_music
 }
