@@ -1,0 +1,457 @@
+#!/bin/bash
+
+#
+# dwm-start - a launcher for dwm.
+# Copyright (c) 2013, Christopher Jeffrey (MIT License).
+# https://github.com/chjj/dwm
+#
+
+#
+# Variables
+#
+
+menu=0
+background=1
+
+#
+# Terminal
+#
+
+terminal='xterm'
+if test -n "$(which x-terminal-emulator 2> /dev/null)"; then
+  terminal=$(readlink -f "$(which x-terminal-emulator)" | xargs basename)
+fi
+if test -n "$TERMINAL"; then
+  terminal=$TERMINAL
+fi
+
+#
+# User Agent
+#
+
+useragent='Mozilla/5.0'
+if test -n "$USER_AGENT"; then
+  useragent=$USER_AGENT
+fi
+
+#
+# Wallpaper
+#
+
+wallpaper=~/wallpaper.png
+if test -n "$WALLPAPER"; then
+  wallpaper=$WALLPAPER
+fi
+
+#
+# Background Color
+# e.g. #000 / black / #222222
+#
+
+bgcolor='#000'
+if test -n "$BG_COLOR"; then
+  bgcolor=$BG_COLOR
+fi
+
+#
+# Run
+#
+
+run() {
+  if test -z "$1"; then
+    echo 'Enter a command.' >& 2
+    return 1
+  fi
+
+  if ! type "$1" > /dev/null 2>& 1 && test ! -x "$1"; then
+    echo 'Command not found.' >& 2
+    return 1
+  fi
+
+  if test $background -eq 1; then
+    cleanup
+    (setsid "$@" > /dev/null 2>& 1 &)
+  else
+    exec "$@"
+  fi
+}
+
+#
+# Unset variables that will confuse
+# another instance of tmux/screen.
+#
+
+cleanup() {
+  # tmux
+  unset TMUX
+  unset TMUX_PANE
+
+  # screen
+  unset STY
+  unset WINDOW
+
+  # These should already be deleted by our terminal we're
+  # starting, but let's delete them for good measure.
+  unset WINDOWID
+  unset TERMCAP
+  unset COLUMNS
+  unset LINES
+}
+
+#
+# Autorun
+#
+
+_autorun() {
+  background=1
+  pidof irssi > /dev/null 2>& 1 && return 1
+  _wallpaper
+  _tmux
+  _mutt
+  _ncmpcpp
+  _irssi
+  _vim
+  _dwb
+}
+
+#
+# Programs
+# NOTE: tmux new = tmux new-session
+#
+
+_terminal() {
+  # run "$terminal" -name term "$@"
+  _tmux "$@"
+}
+
+_term() {
+  # _terminal "$@"
+  _tmux "$@"
+}
+
+_tmux() {
+  run "$terminal" -name tmux -T tmux -e tmux "$@"
+}
+
+_moc() {
+  run "$terminal" -name moc -T moc -e tmux new "mocp $@" \; set status off
+}
+
+_mocp() {
+  _moc "$@"
+}
+
+_ncmpcpp() {
+  pidof mpd > /dev/null 2>& 1 || mpd
+  run "$terminal" -name ncmpcpp -T ncmpcpp -e tmux new "ncmpcpp $@" \; set status off
+}
+
+_irssi() {
+  run "$terminal" -name irssi -T irssi -e tmux new "irssi $@" \; set status off
+}
+
+_weechat() {
+  run "$terminal" -name weechat -T weechat -e tmux new "weechat $@" \; set status off
+}
+
+_vim() {
+  run "$terminal" -name vim -T vim -e tmux new "vim $@" \; set status off
+}
+
+_mutt() {
+  run "$terminal" -name mutt -T mutt -e tmux new "mutt $@" \; set status off
+}
+
+_ssh() {
+  run "$terminal" -name ssh -T ssh -e tmux \
+    new "env TERM=xterm-256color ssh $@" \; \
+    set default-terminal xterm-256color \; \
+    set status off
+}
+
+_ttyclock() {
+  run "$terminal" -name ttyclock -T ttyclock -e tmux new "time.js $@" \; set status off
+}
+
+#
+# Apps
+#
+
+_chrome() {
+  run chromium \
+    --no-referrers \
+    --no-pings \
+    --memory-model=low \
+    --disable-plugins \
+    --enable-webgl \
+    --ignore-gpu-blacklist \
+    "--user-agent=$useragent" \
+    "$@"
+}
+
+_chromium() {
+  _chrome "$@"
+}
+
+_gimp() {
+  run gimp "$@"
+}
+
+_qemu() {
+  local p=$(pidof qemu-system-x86_64 | wc -w)
+  test -n "$QINDEX" && p=$QINDEX
+
+  # local index=$(__qemu-index "${@: -1}")
+  #  if test -n "$index"; then
+  #    echo 'Already started. SSHing...'
+  #    _qemu-ssh "$index"
+  #    return 0
+  #  fi
+
+  QEMU_AUDIO_DRV=alsa \
+  SDL_VIDEO_X11_DGAMOUSE=0 \
+  run qemu-system-x86_64 \
+    -usbdevice tablet \
+    -enable-kvm -m 512 -boot c -vga vmware -soundhw ac97 \
+    -uuid 00000000-0000-0000-0000-000000000000 \
+    -net nic,model=rtl8139,macaddr=00:00:00:00:00:$((0 + p)) \
+    -net user,$(
+      echo -n hostfwd=::$((2022 + p))-:22,
+      echo -n hostfwd=::$((7984 + p))-:5984,
+      echo -n hostfwd=::$((10080 + p))-:8080,
+      echo -n hostfwd=::$((20081 + p))-:8081,
+      echo -n hostfwd=::$((11050 + p))-:9050
+    ) \
+    "$@"
+}
+
+_qemu-term() {
+  run "$terminal" -name qemu-term -T qemu-term \
+    -g 80x25 -e dwm-start qemu-curses "$@"
+}
+
+_qemu-curses() {
+  background=0
+  _qemu -curses "$@"
+}
+
+_qemu-list() {
+  background=0
+  ps aux \
+    | grep qemu-system-x86_64 \
+    | grep '::20[2-9][0-9].*[^ ]\+$' \
+    | sed 's/^[^ ]\+ \+\([0-9]\+\).\+::\(20[2-9][0-9]\).\+ \([^ ]\+\)$/(\2) \3 pid=\1/g' \
+    | sort \
+    | awk '{ printf("%d: %s\n", NR - 1, $0) }' \
+    | sed "s;$HOME;~;g"
+}
+
+_qemu-bg() {
+  _qemu -nographic "$@"
+}
+
+_qemu-ssh() {
+  local p=$1
+  test -z "$p" && return 1
+
+  # Check the file - avoid booting up the same machine
+  # local index=$(__qemu-index "${@: -1}")
+  # if test -n "$index"; then
+  #   echo 'Already started. SSHing...'
+  #   p=$index
+  # fi
+
+  if ! echo "$p" | grep -q '^[0-9]\+$'; then
+    p=$(pidof qemu-system-x86_64 | wc -w)
+    test -n "$QINDEX" && p=$QINDEX
+    _qemu-bg "$@"
+    sleep 5
+  fi
+
+  echo "$(grep -v '^\[localhost\]:20' ~/.ssh/known_hosts)" > ~/.ssh/known_hosts
+  background=0
+  run ssh -p $((2022 + p)) root@localhost
+}
+
+__qemu-index() {
+  local file=$1
+  echo "$file" | grep -q '^[0-9]\+$' && return 0
+  local bg=$background
+  local index line n f
+  while IFS=$'\n' read line; do
+    n=$(echo "$line" | awk '{ print $1 }' | sed 's/://')
+    f=$(echo "$line" | awk '{ $1="";$2="";print $_ }' | sed 's/^ \+//g')
+    # test "$file" = "$f" && index=$n && break
+    test "$(basename "$file")" = "$(basename "$f")" && index=$n && break
+  done < <(_qemu-list)
+  background=$bg
+  test -n "$index" && echo "$index"
+}
+
+_skype() {
+  # run start-skype "$@"
+  _qemu -localtime ~/.qemu/windows7.qcow2
+}
+
+_dwb() {
+  run dwb "$@"
+}
+
+_dwb-incognito() {
+  run dwb -n --temp-profile "$@"
+}
+
+_dwb-open() {
+  local pid=$(ps aux | grep ':[0-9][0-9] dwb$' \
+    | grep -v grep | awk '{ print $2 }')
+  run dwbremote -p "$pid" ":tabopen $@"
+}
+
+_dwb-incognito-open() {
+  local pid=$(ps aux | grep -- 'dwb.*--temp-profile' \
+    | grep -v grep | awk '{ print $2 }')
+  run dwbremote -p "$pid" ":tabopen $@"
+}
+
+_uo() {
+  run wine C:/Razor/Razor.exe
+}
+
+_wow() {
+  run wine C:/WoW/Launcher.exe -opengl
+}
+
+_virtualbox() {
+  run virtualbox "$@"
+}
+
+_book() {
+  # run xterm -fa 'Deja Vu Sans Mono:pixelsize=20:antialias=true' -e less "$@"
+  run xterm -font '-*-terminus-medium-*-*-*-24-*-*-*-*-*-*-*' -e less "$@"
+}
+
+_book-html() {
+  # run xterm -fa 'Deja Vu Sans Mono:pixelsize=20:antialias=true' \
+  #   -e w3m -I UTF-8 -T text/html "$@"
+  run xterm -font '-*-terminus-medium-*-*-*-24-*-*-*-*-*-*-*' \
+    -e w3m -I UTF-8 -T text/html "$@"
+}
+
+#
+# Utils
+#
+
+_wallpaper() {
+  local file="$1"
+  test -z "$file" && file="$wallpaper"
+  if test -f "$file"; then
+    feh --bg-scale "$file"
+  else
+    test -n "$1" && bgcolor="$1"
+    xsetroot -solid "$bgcolor"
+  fi
+}
+
+_big-clock() {
+  run xclock -digital -strftime '%l:%M%P' \
+    -face 'Deja Vu Sans Mono:pixelsize=400:antialias=true'
+}
+
+#
+# Main
+#
+
+main() {
+  local cmd name
+
+  local c=$(test "$1" = "menu" && echo "$2" || echo "$1")
+  if echo "$c" | grep -q '\.qcow2$'; then
+    set -- 'qemu-ssh' "$@"
+  fi
+
+  cmd="$1"
+
+  if test "$cmd" = 'menu'; then
+    shift
+    menu=1
+    background=0
+
+    cmd=$(grep '^_[-a-z]\+()' "$0" \
+      | sed 's/[ _(){]//g' \
+      | sed 's/^\([-a-z]\+\)/\1\nt.\1/g' \
+      | sort \
+      | dmenu "$@")
+    test -z "$cmd" && exit 0
+
+    if echo "$cmd" | grep -q '^t\.'; then
+      cmd=$(echo "$cmd" | sed 's/^t\.//')
+      . tsocks on
+    fi
+
+    name=$(echo "$cmd" | awk '{ print $1 }')
+    if type "_${name}" > /dev/null 2>& 1; then
+      eval "_${cmd}"
+    else
+      eval "exec $cmd"
+    fi
+
+    exit 0
+  fi
+
+  if test "$cmd" = '-fg'; then
+    shift
+    background=0
+    cmd="$1"
+  fi
+
+  if echo "$cmd" | grep -q '^t\.'; then
+    cmd=$(echo "$cmd" | sed 's/^t\.//')
+    . tsocks on
+  fi
+
+  name=$(echo "$cmd" | awk '{ print $1 }')
+  if type "_${name}" > /dev/null 2>& 1; then
+    shift
+    "_${cmd}" "$@"
+  else
+    run "$@"
+  fi
+}
+
+#
+# Completion
+# eval "$(dwm-start _complete)"
+#
+
+__dstart() {
+  local cur=${COMP_WORDS[-1]}
+  if test ${#COMP_WORDS[@]} -gt 2; then
+    _command "$@"
+    return $?
+  fi
+  if echo "$cur" | grep -q '/'; then
+    # echo "$cur" | grep -q '\.qcow2$' && cur="$(dirname "$cur")/"
+    # COMPREPLY=$(compgen -f -o plusdirs "$cur" | grep "^$cur")
+    # _command "$@"
+    return $?
+  fi
+  local cmds=$(grep '^_[-a-z]\+()' "__FILE__" \
+    | sed 's/[ _(){]//g' \
+    | sed 's/^\([-a-z]\+\)/\1\nt.\1/g' \
+    | sort \
+    | grep "^$cur")
+  COMPREPLY=($cmds)
+  return 0
+}
+
+__complete() {
+  type __dstart | sed 1d | sed "s;__FILE__;$(readlink -f "$0");"
+  echo 'complete -F __dstart dwm-start'
+  echo 'complete -F __dstart ds'
+}
+
+#
+# Execute
+#
+
+main "$@"
