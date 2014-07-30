@@ -179,6 +179,7 @@ _ttyclock() {
 
 _chrome() {
   run chromium \
+    --incognito \
     --no-referrers \
     --no-pings \
     --memory-model=low \
@@ -191,6 +192,10 @@ _chrome() {
 
 _chromium() {
   _chrome "$@"
+}
+
+_firefox() {
+  GTK2_RC_FILES=/usr/share/themes/Simple/gtk-2.0/gtkrc run firefox -private "$@"
 }
 
 _gimp() {

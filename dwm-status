@@ -250,7 +250,11 @@ get_ssid() {
 }
 
 _get_ssid_nm() {
-  nmcli con status | sed -n 2p | awk '{ print $1 }'
+  nmcli con show \
+    | grep -v -- '--[ \t]*$' \
+    | sed '/^[ \t]*$/d' \
+    | sed -n 2p \
+    | awk '{ print $1 }'
 }
 
 _get_ssid_wicd() {
