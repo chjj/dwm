@@ -195,7 +195,9 @@ _chromium() {
 }
 
 _firefox() {
-  GTK2_RC_FILES=/usr/share/themes/Simple/gtk-2.0/gtkrc run firefox -private "$@"
+  GTK2_RC_FILES=/usr/share/themes/Simple/gtk-2.0/gtkrc run firefox \
+    -private \
+    "$@"
 }
 
 _gimp() {

@@ -258,16 +258,16 @@ _get_ssid_nm() {
 }
 
 _get_ssid_wicd() {
-  local w
-  w=$(wicd-cli -d --wireless 2> /dev/null)
+  local data
+  data=$(wicd-cli -d --wireless 2> /dev/null)
   if test $? -ne 0; then
-    w=$(wicd-cli -d --wired 2> /dev/null)
+    data=$(wicd-cli -d --wired 2> /dev/null)
   fi
   if test $? -ne 0; then
     echo 'Unknown'
     return 1
   fi
-  echo "$w" | grep '^Essid:' | awk '{ print $2 }'
+  echo "$data" | grep '^Essid:' | awk '{ print $2 }'
 }
 
 #
@@ -348,33 +348,32 @@ get_disks() {
 
 gputemp=
 get_gputemp() {
+  local _gputemp
   if which nvidia-settings > /dev/null 2>& 1; then
-    _get_gputemp_nvidia
+    _gputemp=$(_get_gputemp_nvidia)
   elif which aticonfig > /dev/null 2>& 1; then
-    _get_gputemp_ati
+    _gputemp=$(_get_gputemp_ati)
   else
     gputemp='0°C'
   fi
-}
-
-_get_gputemp_nvidia() {
-  local _gputemp=$(nvidia-settings -tq gpucoretemp)
   ret=$_gputemp
   gputemp=$_gputemp
 }
 
+_get_gputemp_nvidia() {
+  nvidia-settings -tq gpucoretemp
+}
+
 _get_gputemp_ati() {
   # https://wiki.archlinux.org/index.php/AMD_Catalyst
-  local _gputemp=$(env \
+  env \
     DISPLAY=:0 \
     WINDOWPATH=1 \
     XAUTHORITY=${HOME}/.Xauthority \
     aticonfig --odgt \
     | tail -n 1 \
     | grep -o '[0-9.]\+ C$' \
-    | sed 's/ /°/')
-  ret=$_gputemp
-  gputemp=$_gputemp
+    | sed 's/ /°/'
 }
 
 #
@@ -588,23 +587,25 @@ get__battery() {
 music=
 
 get_music() {
+  local _music
   if pidof mocp > /dev/null 2>& 1; then
-    _get_music_mocp
+    _music=$(_get_music_mocp)
   elif pidof ncmpcpp > /dev/null 2>& 1; then
-    _get_music_ncmpcpp
+    _music=$(_get_music_ncmpcpp)
   elif pidof mpg123 > /dev/null 2>& 1; then
-    _get_music_mpg123
+    _music=$(_get_music_mpg123)
   else
     music='none'
   fi
+  ret=$_music
+  music=$_music
   return $?
 }
 
 _get_music_mocp() {
   local data=$(mocp -i 2> /dev/null)
   if test -z "$data" || echo "$data" | grep -q 'State: STOP'; then
-    ret='none'
-    music=$ret
+    echo 'none'
     return 1
   fi
   local title=$(echo "$data" | grep '^SongTitle: ' | sed 's/^SongTitle: //')
@@ -620,31 +621,24 @@ _get_music_mocp() {
     local cur=$(echo "$data" | grep '^CurrentTime: ' | sed 's/^CurrentTime: //')
     test -n "$cur" && left="+$cur"
   fi
-  local _music="$title - $left"
-  ret=$_music
-  music=$_music
+  echo "$title - $left"
 }
 
 _get_music_ncmpcpp() {
-  local _music=$(ncmpcpp --now-playing '{%a - %t}|{%f}{ - %l}' 2> /dev/null)
-  if test -z "$_music"; then
-    ret='none'
-    music=$ret
+  local data=$(ncmpcpp --now-playing '{%a - %t}|{%f}{ - %l}' 2> /dev/null)
+  if test -z "$data"; then
+    echo 'none'
     return 1
   fi
-  ret=$_music
-  music=$_music
+  echo "$data"
 }
 
 _get_music_mpg123() {
-  local _music
-  _music=$(ps ax \
+  ps ax \
     | grep -v grep \
     | grep mpg123 \
     | awk '{ print $6 }' \
-    | xargs basename)
-  ret=$_music
-  music=$_music
+    | xargs basename
 }
 
 #
