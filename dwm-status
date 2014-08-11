@@ -407,7 +407,7 @@ get_weather() {
 
   # California
   # San Francisco
-  woeid='2487956'
+  # woeid='2487956'
   # Los Angeles
   # woeid='2442047'
 
@@ -417,7 +417,7 @@ get_weather() {
 
   # Georgia
   # Atlanta
-  # woeid='2357024'
+  woeid='2357024'
 
   test -n "$1" && woeid=$1
 
@@ -744,9 +744,9 @@ main() {
     get_battery
     get_time
 
-    # timer $((24 * 60 * 60)) get_ip
+    # timer $((8 * 60 * 60)) get_ip
 
-    timer $((2 * 60 * 60)) get_weather
+    timer $((30 * 60)) get_weather
 
     if test "$weather" = 'Unknown' -a -z "$checked_weather"; then
       checked_weather=1
