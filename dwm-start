@@ -262,12 +262,13 @@ _qemu-ssh() {
   test -z "$p" && return 1
 
   # Check the file - avoid booting up the same machine
-  # local index=$(__qemu-index "${@: -1}")
-  # if test -n "$index"; then
-  #   echo 'Already started. SSHing...'
-  #   p=$index
-  # fi
+  local index=$(__qemu-index "${@: -1}")
+  if test -n "$index"; then
+    echo 'Already started. SSHing...'
+    p=$index
+  fi
 
+  # Make sure the first arg is a number, if not, assume it's a file.
   if ! echo "$p" | grep -q '^[0-9]\+$'; then
     p=$(pidof qemu-system-x86_64 | wc -w)
     test -n "$QINDEX" && p=$QINDEX
@@ -275,19 +276,38 @@ _qemu-ssh() {
     sleep 5
   fi
 
+  # Clear the known hosts
   echo "$(grep -v '^\[localhost\]:20' ~/.ssh/known_hosts)" > ~/.ssh/known_hosts
+
+  # Run this in the foreground of the terminal
   background=0
+
+  # If we want to ssh in as a normal user
+  if test -n "$SSH_NUSER"; then
+    run ssh -p $((2022 + p)) user@localhost
+    return 0
+  fi
+
   run ssh -p $((2022 + p)) root@localhost
+}
+
+_qemu-user() {
+  SSH_NUSER=1
+  _qemu-ssh "$@"
 }
 
 __qemu-index() {
   local file=$1
+  file=$(echo "$file" | sed "s;^~;$HOME;")
   echo "$file" | grep -q '^[0-9]\+$' && return 0
   local bg=$background
   local index line n f
   while IFS=$'\n' read line; do
     n=$(echo "$line" | awk '{ print $1 }' | sed 's/://')
-    f=$(echo "$line" | awk '{ $1="";$2="";print $_ }' | sed 's/^ \+//g')
+    f=$(echo "$line" \
+      | awk '{ $1="";$2="";$4=""; print $_ }' \
+      | sed 's/^ \+\| \+$//g' \
+      | sed "s;^~;$HOME;")
     # test "$file" = "$f" && index=$n && break
     test "$(basename "$file")" = "$(basename "$f")" && index=$n && break
   done < <(_qemu-list)
