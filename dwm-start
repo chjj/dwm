@@ -178,8 +178,35 @@ _ttyclock() {
 #
 
 _chrome() {
+  # http://peter.sh/experiments/chromium-command-line-switches/
+  # https://www.google.com/search?q=chrome+extensions-on-chrome-urls
+  # https://plus.google.com/+FrancoisBeaufort/posts/LzAjXa7pmDY
+  # https://code.google.com/p/chromium/issues/detail?id=265810
+  # https://code.google.com/p/chromium/issues/detail?id=306654
+
+  # --ignore-urlfetcher-cert-requests
+  # --extensions-on-chrome-urls
+  # --ignore-certificate-errors
+  # --embedded-extension-options
+  # --enable-embedded-extension-options
+  # --enable-experimental-extension-apis
+  # --extensions-not-webstore
+  # --show-component-extension-options
+  # --force-app-mode ⊗
+  # --no-sandbox
+  # --single-process
+  # --disable-web-security - no CORS
+  # chrome://flags
+  # --single-process - doesnt seem to work
+  # --incognito
+
+  # (setsid dwm-start _clean-chrome > /dev/null 2>& 1 &)
+
   run chromium \
     --incognito \
+    --extensions-on-chrome-urls \
+    --enable-experimental-extension-apis \
+    --ignore-certificate-errors \
     --no-referrers \
     --no-pings \
     --memory-model=low \
@@ -188,6 +215,30 @@ _chrome() {
     --ignore-gpu-blacklist \
     "--user-agent=$useragent" \
     "$@"
+}
+
+__clean-chrome() {
+  # Make a fifo to read from fd for timeouts
+  # http://unix.stackexchange.com/questions/68236
+  local _none
+  local tfifo=/tmp/dwm_start_sleep_fifo_353463524
+  rm -f $tfifo
+  mkfifo $tfifo
+  exec 200<> $tfifo
+  read -t 3 -u 200 _none
+  while true; do
+    if ! pidof chromium > /dev/null 2>& 1; then
+      rm -f \
+        ~/.config/chromium/Default/{Cookies,Cookies-journal,Web\ Data,Web\ Data-journal} \
+        ~/.config/chromium/{Safe\ Browsing\ Cookies,Safe\ Browsing\ Cookies-journal} \
+        ~/.config/chromium/Default/History{,-journal,\ Provider\ Cache} \
+        ~/.config/chromium/Default/{Last\ Tabs,Last\ Session} \
+        ~/.config/chromium/Default/{Login\ Data,Login\ Data-journal} \
+        ~/.config/chromium/Default/{Top\ Sites,Top\ Sites-journal}
+        exit 0
+    fi
+    read -t 2 -u 200 _none
+  done
 }
 
 _chromium() {
