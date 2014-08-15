@@ -464,8 +464,6 @@ main() {
 
   cmd="$1"
 
-  exec > ~/dwm-start.log
-
   if test "$cmd" = 'menu'; then
     shift
     menu=1
