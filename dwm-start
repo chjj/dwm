@@ -269,7 +269,7 @@ _firefox() {
     fi
     shift
   done
-  GTK2_RC_FILES=/usr/share/themes/Simple/gtk-2.0/gtkrc \
+  GTK2_RC_FILES=/usr/share/themes/Default/gtk-2.0-key/gtkrc \
     run firefox \
     "${args[@]}"
 }
