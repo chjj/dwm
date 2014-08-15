@@ -183,6 +183,8 @@ _chrome() {
   # https://plus.google.com/+FrancoisBeaufort/posts/LzAjXa7pmDY
   # https://code.google.com/p/chromium/issues/detail?id=265810
   # https://code.google.com/p/chromium/issues/detail?id=306654
+  # http://www.chromium.org/developers/design-documents/network-stack/socks-proxy
+  # https://www.google.com/search?q=chrome+socks+proxy&gbv=1&sei=HYLtU-roEqrX8AGyiYCIDg
 
   # --ignore-urlfetcher-cert-requests
   # --extensions-on-chrome-urls
@@ -202,8 +204,7 @@ _chrome() {
 
   # (setsid dwm-start _clean-chrome > /dev/null 2>& 1 &)
 
-  run chromium \
-    --incognito \
+  local args=(
     --extensions-on-chrome-urls \
     --enable-experimental-extension-apis \
     --ignore-certificate-errors \
@@ -213,8 +214,26 @@ _chrome() {
     --disable-plugins \
     --enable-webgl \
     --ignore-gpu-blacklist \
-    "--user-agent=$useragent" \
-    "$@"
+    "--user-agent=$useragent"
+  )
+
+  local arg
+
+  local i=${#args[@]}
+
+  while test $# -gt 0; do
+    if test "$1" = '-i'; then
+      args[i++]='--incognito'
+    elif test "$1" = '-p'; then
+      args[i++]='--proxy-server=socks5://localhost:1080'
+      args[i++]='--host-resolver-rules=MAP * 0.0.0.0 , EXCLUDE localhost'
+    else
+      args[i++]=$1
+    fi
+    shift
+  done
+
+  run chromium "${args[@]}"
 }
 
 __clean-chrome() {
@@ -239,10 +258,6 @@ __clean-chrome() {
     fi
     read -t 2 -u 200 _none
   done
-}
-
-_chromium() {
-  _chrome "$@"
 }
 
 _firefox() {
@@ -449,6 +464,8 @@ main() {
 
   cmd="$1"
 
+  exec > ~/dwm-start.log
+
   if test "$cmd" = 'menu'; then
     shift
     menu=1
@@ -463,7 +480,12 @@ main() {
 
     if echo "$cmd" | grep -q '^t\.'; then
       cmd=$(echo "$cmd" | sed 's/^t\.//')
-      . tsocks on
+      # Chrome doesn't work with tsocks - use native args
+      if echo "$cmd" | grep -q '^chrome'; then
+        cmd="$cmd -p"
+      else
+        . tsocks on
+      fi
     fi
 
     name=$(echo "$cmd" | awk '{ print $1 }')
@@ -484,7 +506,13 @@ main() {
 
   if echo "$cmd" | grep -q '^t\.'; then
     cmd=$(echo "$cmd" | sed 's/^t\.//')
-    . tsocks on
+    # Chrome doesn't work with tsocks - use native args
+    if echo "$cmd" | grep -q '^chrome'; then
+      shift
+      set -- 'chrome' '-p' "$@"
+    else
+      . tsocks on
+    fi
   fi
 
   name=$(echo "$cmd" | awk '{ print $1 }')
