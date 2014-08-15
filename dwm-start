@@ -217,8 +217,6 @@ _chrome() {
     "--user-agent=$useragent"
   )
 
-  local arg
-
   local i=${#args[@]}
 
   while test $# -gt 0; do
@@ -261,9 +259,19 @@ __clean-chrome() {
 }
 
 _firefox() {
-  GTK2_RC_FILES=/usr/share/themes/Simple/gtk-2.0/gtkrc run firefox \
-    -private \
-    "$@"
+  local args=()
+  local i=${#args[@]}
+  while test $# -gt 0; do
+    if test "$1" = '-i'; then
+      args[i++]='-private'
+    else
+      args[i++]=$1
+    fi
+    shift
+  done
+  GTK2_RC_FILES=/usr/share/themes/Simple/gtk-2.0/gtkrc \
+    run firefox \
+    "${args[@]}"
 }
 
 _gimp() {
