@@ -147,7 +147,20 @@ _ncmpcpp() {
 }
 
 _irssi() {
-  run "$terminal" -name irssi -T irssi -e tmux new "irssi $@" \; set status off
+  # run "$terminal" -name irssi -T irssi -e tmux new "irssi $@" \; set status off
+  __irssi-server
+}
+
+__irssi-server() {
+  local server='public-system76'
+  if test -e ~/.ssh/environment; then
+    . ~/.ssh/environment > /dev/null 2>& 1
+    server=$(ssh -o ConnectTimeout=4 system76 'echo system76' 2> /dev/null || \
+      ssh -o ConnectTimeout=8 public-system76 'echo public-system76' 2> /dev/null)
+  fi
+  run "$terminal" -name irssi -T irssi -e tmux new \
+    "bash -i -c 'exec ssh -t $server exec\\ bash\\ -i\\ -c\\ irssi-start'" \
+    \; set status off
 }
 
 _weechat() {
@@ -456,6 +469,14 @@ _wallpaper() {
 _big-clock() {
   run xclock -digital -strftime '%l:%M%P' \
     -face 'Deja Vu Sans Mono:pixelsize=400:antialias=true'
+}
+
+_slock() {
+  exec slock
+}
+
+_lock() {
+  exec slock
 }
 
 #

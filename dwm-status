@@ -242,8 +242,9 @@ get_ssid() {
   elif ps aux | grep -v grep | grep -q wicd-daemon; then
     _ssid=$(_get_ssid_wicd)
   else
-    _ssid='Unknown'
+    _ssid='Not Connected'
   fi
+  test -z "$(echo "$_ssid" | tr -d ' \r\n\t')" && _ssid='Not Connected'
   ret=$_ssid
   ssid=$_ssid
 }
@@ -407,7 +408,7 @@ get_weather() {
 
   # California
   # San Francisco
-  # woeid='2487956'
+  woeid='2487956'
   # Los Angeles
   # woeid='2442047'
 
@@ -417,7 +418,7 @@ get_weather() {
 
   # Georgia
   # Atlanta
-  woeid='2357024'
+  # woeid='2357024'
 
   test -n "$1" && woeid=$1
 
@@ -432,7 +433,7 @@ get_weather() {
     | sed 's/<[^>]\+>//g' \
     | sed 's/ F$/°F/' \
     | xargs)
-  test -z "$_weather" && _weather='Unknown'
+  test -z "$(echo "$_weather" | tr -d ' \r\n\t')" && _weather='Unknown'
   ret=$_weather
   weather=$_weather
 }
