@@ -217,6 +217,8 @@ _chrome() {
 
   # (setsid dwm-start _clean-chrome > /dev/null 2>& 1 &)
 
+  _clear-data 0.5
+
   local args=(
     --extensions-on-chrome-urls \
     --enable-experimental-extension-apis \
@@ -258,20 +260,15 @@ __clean-chrome() {
   read -t 3 -u 200 _none
   while true; do
     if ! pidof chromium > /dev/null 2>& 1; then
-      rm -f \
-        ~/.config/chromium/Default/{Cookies,Cookies-journal,Web\ Data,Web\ Data-journal} \
-        ~/.config/chromium/{Safe\ Browsing\ Cookies,Safe\ Browsing\ Cookies-journal} \
-        ~/.config/chromium/Default/History{,-journal,\ Provider\ Cache} \
-        ~/.config/chromium/Default/{Last\ Tabs,Last\ Session} \
-        ~/.config/chromium/Default/{Login\ Data,Login\ Data-journal} \
-        ~/.config/chromium/Default/{Top\ Sites,Top\ Sites-journal}
-        exit 0
+      _clear-data
+      exit 0
     fi
     read -t 2 -u 200 _none
   done
 }
 
 _firefox() {
+  _clear-data 0.5
   local args=()
   local i=${#args[@]}
   while test $# -gt 0; do
@@ -408,10 +405,12 @@ _skype() {
 }
 
 _dwb() {
+  _clear-data 0.5
   run dwb "$@"
 }
 
 _dwb-incognito() {
+  _clear-data 0.5
   run dwb -n --temp-profile "$@"
 }
 
@@ -479,12 +478,62 @@ _lock() {
   exec slock
 }
 
+_clear-data() {
+  local dir
+
+  # Chromium
+  for dir in ~/.config/chromium/Default ~/.config/google-chrome/Default; do
+    pushd "$dir" &> /dev/null
+    if test "$(pwd)" != "$dir"; then
+      continue
+    fi
+    rm -rf 'Cookies' 'Cookies-journal' 'Web Data' 'Web Data-journal' \
+      'Login Data' 'Login Data-journal' 'Archived History' \
+      'Archived History-journal' 'History' 'History-journal' \
+      'History Provider Cache' 'Top Sites' 'Top Sites-journal' 'Visited Links' \
+      'Application Cache' 'Last Session' 'Last Tabs' 'Favicons' \
+      'Favicons-journal' 'Current Tabs' 'Current Session' 'Session Storage' \
+      'databases'
+    find 'Local Storage/' -print0 \
+      | grep -z -Z -v '^Local Storage/chrome-extension_\|^Local Storage/$' \
+      | xargs -0 rm -rf
+    popd &> /dev/null
+  done
+
+  for dir in ~/.config/chromium/ ~/.config/google-chrome/; do
+    if test "$(pwd)" != "$dir"; then
+      continue
+    fi
+    pushd "$dir" &> /dev/null
+    rm -rf 'Safe Browsing Cookies' 'Safe Browsing Cookies-journal' \
+      'Crash Reports' 'Local State' .org.chromium.* 'Service State'
+    popd &> /dev/null
+  done
+
+  # Firefox
+  rm -rf ~/.mozilla/firefox/*.default/cookies.sqlite
+  rm -rf ~/.mozilla/firefox/*.default/storage
+  rm -rf ~/.mozilla/firefox/*.default/webapps
+  rm -rf ~/.mozilla/firefox/*.default/search.json
+  # rm -rf ~/.mozilla/firefox/*.default/healthreport
+  # rm -rf ~/.mozilla/firefox/*.default/key3.db
+
+  # DWB
+  find ~/.config/dwb -name '[0-9]*' -print0 | xargs -0 rm -rf
+
+  if test -n "$1"; then
+    sleep "$1"
+  fi
+}
+
 #
 # Main
 #
 
 main() {
   local cmd name
+
+  _clear-data
 
   local c=$(test "$1" = "menu" && echo "$2" || echo "$1")
   if echo "$c" | grep -q '\.qcow2$'; then
