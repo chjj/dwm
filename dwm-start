@@ -406,24 +406,41 @@ _skype() {
 
 _dwb() {
   _clear-data 0.5
-  run dwb "$@"
-}
-
-_dwb-incognito() {
-  _clear-data 0.5
-  run dwb -n --temp-profile "$@"
+  local args=()
+  local i=${#args[@]}
+  while test $# -gt 0; do
+    if test "$1" = '-i'; then
+      args[i++]='-n'
+      args[i++]='--temp-profile'
+    else
+      args[i++]=$1
+    fi
+    shift
+  done
+  run dwb "${args[@]}"
 }
 
 _dwb-open() {
-  local pid=$(ps aux | grep ':[0-9][0-9] dwb$' \
-    | grep -v grep | awk '{ print $2 }')
-  run dwbremote -p "$pid" ":tabopen $@"
-}
-
-_dwb-incognito-open() {
-  local pid=$(ps aux | grep -- 'dwb.*--temp-profile' \
-    | grep -v grep | awk '{ print $2 }')
-  run dwbremote -p "$pid" ":tabopen $@"
+  local args=()
+  local i=${#args[@]}
+  local incognito=0
+  local pid
+  while test $# -gt 0; do
+    if test "$1" = '-i'; then
+      incognito=1
+    else
+      args[i++]=$1
+    fi
+    shift
+  done
+  if test $incognito -eq 0; then
+    pid=$(ps aux | grep ':[0-9][0-9] dwb$' \
+      | grep -v grep | awk '{ print $2 }')
+  else
+    pid=$(ps aux | grep -- 'dwb.*--temp-profile' \
+      | grep -v grep | awk '{ print $2 }')
+  fi
+  run dwbremote -p "$pid" ":tabopen ${args[@]}"
 }
 
 _uo() {
@@ -495,8 +512,8 @@ _clear-data() {
       'Favicons-journal' 'Current Tabs' 'Current Session' 'Session Storage' \
       'databases'
     find 'Local Storage/' -print0 \
-      | grep -z -Z -v '^Local Storage/chrome-extension_\|^Local Storage/$' \
-      | xargs -0 rm -rf
+     | grep -z -Z -v '^Local Storage/chrome-extension_\|^Local Storage/$' \
+     | xargs -0 rm -rf
     popd &> /dev/null
   done
 
