@@ -217,8 +217,6 @@ _chrome() {
 
   # (setsid dwm-start _clean-chrome > /dev/null 2>& 1 &)
 
-  _clear-data 0.5
-
   local args=(
     --extensions-on-chrome-urls \
     --enable-experimental-extension-apis \
@@ -249,26 +247,7 @@ _chrome() {
   run chromium "${args[@]}"
 }
 
-__clean-chrome() {
-  # Make a fifo to read from fd for timeouts
-  # http://unix.stackexchange.com/questions/68236
-  local _none
-  local tfifo=/tmp/dwm_start_sleep_fifo_353463524
-  rm -f $tfifo
-  mkfifo $tfifo
-  exec 200<> $tfifo
-  read -t 3 -u 200 _none
-  while true; do
-    if ! pidof chromium > /dev/null 2>& 1; then
-      _clear-data
-      exit 0
-    fi
-    read -t 2 -u 200 _none
-  done
-}
-
 _firefox() {
-  _clear-data 0.5
   local args=()
   local i=${#args[@]}
   while test $# -gt 0; do
@@ -405,7 +384,6 @@ _skype() {
 }
 
 _dwb() {
-  _clear-data 0.5
   local args=()
   local i=${#args[@]}
   while test $# -gt 0; do
@@ -549,8 +527,6 @@ _clear-data() {
 
 main() {
   local cmd name
-
-  _clear-data
 
   local c=$(test "$1" = "menu" && echo "$2" || echo "$1")
   if echo "$c" | grep -q '\.qcow2$'; then
