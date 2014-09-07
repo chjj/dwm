@@ -151,6 +151,10 @@ _irssi() {
   __irssi-server
 }
 
+_irssi-local() {
+  run "$terminal" -name irssi -T irssi -e tmux new "irssi $@" \; set status off
+}
+
 __irssi-server() {
   local server='public-system76'
   if test -e ~/.ssh/environment; then
@@ -217,7 +221,7 @@ _chrome() {
 
   # (setsid dwm-start _clean-chrome > /dev/null 2>& 1 &)
 
-  _clear-data 0.5
+  _clear-data 0.5 chromium
 
   local args=(
     --extensions-on-chrome-urls \
@@ -250,7 +254,7 @@ _chrome() {
 }
 
 _firefox() {
-  _clear-data 0.5
+  _clear-data 0.5 firefox
   local args=()
   local i=${#args[@]}
   while test $# -gt 0; do
@@ -387,7 +391,7 @@ _skype() {
 }
 
 _dwb() {
-  _clear-data 0.5
+  _clear-data 0.5 dwb
   local args=()
   local i=${#args[@]}
   while test $# -gt 0; do
@@ -479,50 +483,65 @@ _lock() {
 
 _clear-data() {
   local dir
+  local timeout=$1
+  local browser=$2
 
   # Chromium
-  for dir in ~/.config/chromium/Default ~/.config/google-chrome/Default; do
-    pushd "$dir" &> /dev/null
-    if test "$(pwd)" != "$dir"; then
-      continue
-    fi
-    # Safe:
-    rm -rf 'Cookies' 'Cookies-journal'
-    # Original:
-    # rm -rf 'Cookies' 'Cookies-journal' 'Web Data' 'Web Data-journal'
-    # Bad:
-    # rm -rf 'Cookies' 'Cookies-journal' 'Web Data' 'Web Data-journal' \
-    #   'Login Data' 'Login Data-journal' 'Archived History' \
-    #   'Archived History-journal' 'History' 'History-journal' \
-    #   'History Provider Cache' 'Top Sites' 'Top Sites-journal' 'Visited Links' \
-    #   'Application Cache' 'Last Session' 'Last Tabs' 'Favicons' \
-    #   'Favicons-journal' 'Current Tabs' 'Current Session' 'Session Storage' \
-    #   'databases' 'Network Action Predictor' 'Network Action Predictor-journal' \
-    #   'QuotaManager' 'QuotaManager-journal'
-    find 'Local Storage/' -print0 \
-      | grep -z -Z -v '^Local Storage/chrome-extension_\|^Local Storage/$' \
-      | xargs -0 rm -rf
-    popd &> /dev/null
-  done
+  if test x"$browser" = x'chromium' -o -z "$browser"; then
+    for dir in ~/.config/chromium/Default ~/.config/google-chrome/Default; do
+      pushd "$dir" &> /dev/null
+      if test "$(pwd)" != "$dir"; then
+        continue
+      fi
+      # Safe:
+      rm -rf 'Cookies' 'Cookies-journal'
+      # Unknown:
+      # rm -rf File\ System/*
+      # #rm -rf File\ System/000/*
+      # Original:
+      # rm -rf 'Cookies' 'Cookies-journal' 'Web Data' 'Web Data-journal'
+      # Bad:
+      # rm -rf 'Cookies' 'Cookies-journal' 'Web Data' 'Web Data-journal' \
+      #   'Login Data' 'Login Data-journal' 'Archived History' \
+      #   'Archived History-journal' 'History' 'History-journal' \
+      #   'History Provider Cache' 'Top Sites' 'Top Sites-journal' 'Visited Links' \
+      #   'Application Cache' 'Last Session' 'Last Tabs' 'Favicons' \
+      #   'Favicons-journal' 'Current Tabs' 'Current Session' 'Session Storage' \
+      #   'databases' 'Network Action Predictor' 'Network Action Predictor-journal' \
+      #   'QuotaManager' 'QuotaManager-journal'
+      find 'Local Storage/' -print0 \
+        | grep -z -Z -v '^Local Storage/chrome-extension_\|^Local Storage/$' \
+        | xargs -0 rm -rf
+      popd &> /dev/null
+    done
+  fi
 
-  for dir in ~/.config/chromium/ ~/.config/google-chrome/; do
-    if test "$(pwd)" != "$dir"; then
-      continue
-    fi
-    pushd "$dir" &> /dev/null
-    # Safe:
-    rm -rf 'Safe Browsing Cookies' 'Safe Browsing Cookies-journal'
-    # Original:
-    # rm -rf 'Safe Browsing Cookies' 'Safe Browsing Cookies-journal'
-    # Bad:
-    # rm -rf 'Safe Browsing Cookies' 'Safe Browsing Cookies-journal' \
-    #   'Crash Reports' 'Local State' .org.chromium.* 'Service State'
-    popd &> /dev/null
-  done
+  # Chrome
+  if test x"$browser" = x'chrome' -o -z "$browser"; then
+    for dir in ~/.config/chromium/ ~/.config/google-chrome/; do
+      if test "$(pwd)" != "$dir"; then
+        continue
+      fi
+      pushd "$dir" &> /dev/null
+      # Safe:
+      rm -rf 'Safe Browsing Cookies' 'Safe Browsing Cookies-journal'
+      # Unknown:
+      # rm -rf File\ System/*
+      # #rm -rf File\ System/000/*
+      # Original:
+      # rm -rf 'Safe Browsing Cookies' 'Safe Browsing Cookies-journal'
+      # Bad:
+      # rm -rf 'Safe Browsing Cookies' 'Safe Browsing Cookies-journal' \
+      #   'Crash Reports' 'Local State' .org.chromium.* 'Service State'
+      popd &> /dev/null
+    done
+  fi
 
   # Firefox
-  rm -rf ~/.mozilla/firefox/*.default/{cookies,formhistory,healthreport,places,signons,webappsstore}.sqlite \
-    ~/.mozilla/firefox/*.default/storage/persistent/moz-safe-about+home/idb/*
+  if test x"$browser" = x'firefox' -o -z "$browser"; then
+    rm -rf ~/.mozilla/firefox/*.default/{cookies,formhistory,healthreport,places,signons,webappsstore}.sqlite \
+      ~/.mozilla/firefox/*.default/storage/persistent/moz-safe-about+home/idb/*
+  fi
 
   # rm -rf ~/.mozilla/firefox/*.default/cookies.sqlite
   # rm -rf ~/.mozilla/firefox/*.default/storage
@@ -533,10 +552,12 @@ _clear-data() {
   # #rm -rf ~/.mozilla/firefox/*.default/key3.db
 
   # DWB
-  find ~/.config/dwb -name '[0-9]*' -print0 | xargs -0 rm -rf
+  if test x"$browser" = x'dwb' -o -z "$browser"; then
+    find ~/.config/dwb -name '[0-9]*' -print0 | xargs -0 rm -rf
+  fi
 
-  if test -n "$1"; then
-    sleep "$1"
+  if test -n "$timeout"; then
+    sleep "$timeout"
   fi
 }
 
