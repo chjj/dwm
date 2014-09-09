@@ -147,7 +147,6 @@ _ncmpcpp() {
 }
 
 _irssi() {
-  # run "$terminal" -name irssi -T irssi -e tmux new "irssi $@" \; set status off
   __irssi-server
 }
 
@@ -366,6 +365,10 @@ _qemu-user() {
   _qemu-ssh "$@"
 }
 
+_qemu-stop() {
+  run ssh "root@q${1}" 'systemctl poweroff'
+}
+
 __qemu-index() {
   local file=$1
   file=$(echo "$file" | sed "s;^~;$HOME;")
@@ -565,6 +568,13 @@ _clear-data() {
 # Main
 #
 
+__get_cmds() {
+  grep '^_[-a-z]\+()' "$0" \
+    | sed 's/[ _(){]//g' \
+    | sed 's/^\([-a-z]\+\)/\1\nt.\1/g' \
+    | sort
+}
+
 main() {
   local cmd name
 
@@ -577,16 +587,17 @@ main() {
 
   cmd="$1"
 
+  if test "$cmd" = "commands"; then
+    __get_cmds
+    exit 0
+  fi
+
   if test "$cmd" = 'menu'; then
     shift
     menu=1
     background=0
 
-    cmd=$(grep '^_[-a-z]\+()' "$0" \
-      | sed 's/[ _(){]//g' \
-      | sed 's/^\([-a-z]\+\)/\1\nt.\1/g' \
-      | sort \
-      | dmenu "$@")
+    cmd=$(__get_cmds | dmenu "$@")
     test -z "$cmd" && exit 0
 
     if echo "$cmd" | grep -q '^t\.'; then
