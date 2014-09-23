@@ -159,6 +159,7 @@ static const char *touchcmd[]     = { "sh", "-c", "synclient TouchpadOff="
 	"$(synclient -l | grep -c 'TouchpadOff.*=.*0')"
 	" && xdotool mousemove 32767 32767",
 	NULL };
+static const char *slockcmd[]  = { "slock", NULL };
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -210,6 +211,7 @@ static Key keys[] = {
 	{ MODKEY,                       XK_c,      center,         {0} },
 	{ MODKEY,                       XK_g,      spawn,          {.v = clipcmd } },
 	{ MODKEY,                       XK_a,      spawn,          {.v = touchcmd } },
+	{ MODKEY|ShiftMask,             XK_l,      spawn,          {.v = slockcmd } },
 
 	// If togglemaximize is enabled:
 	//{ MODKEY,                       XK_m,      togglemaximize, {0} },
