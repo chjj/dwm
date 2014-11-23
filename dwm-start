@@ -155,15 +155,23 @@ _irssi-local() {
 }
 
 __irssi-server() {
-  local server='public-system76'
+  local server='system76.public'
   if test -e ~/.ssh/environment; then
     . ~/.ssh/environment > /dev/null 2>& 1
     server=$(ssh -o ConnectTimeout=4 system76 'echo system76' 2> /dev/null || \
-      ssh -o ConnectTimeout=8 public-system76 'echo public-system76' 2> /dev/null)
+      ssh -o ConnectTimeout=8 system76.public 'echo system76.public' 2> /dev/null)
   fi
   run "$terminal" -name irssi -T irssi -e tmux new \
     "bash -i -c 'exec ssh -t $server exec\\ bash\\ -i\\ -c\\ irssi-start'" \
     \; set status off
+}
+
+_irssi-disconnect() {
+  ps aux \
+    | grep '[^co] ssh.*irssi-start' \
+    | grep -v grep \
+    | awk '{ print $2 }' \
+    | xargs kill
 }
 
 _weechat() {
