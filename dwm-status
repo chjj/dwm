@@ -535,11 +535,12 @@ get_ip() {
 # Battery
 # NOTE: some systems use charge_full/charge_now
 # instead of energy_full/energy_now.
+# Could use energy_full_design instead of energy_full.
 #
 
 battery=
-battery_f=$(cat /sys/class/power_supply/BAT0/energy_full_design 2> /dev/null \
-  || cat /sys/class/power_supply/BAT0/charge_full_design 2> /dev/null)
+battery_f=$(cat /sys/class/power_supply/BAT0/energy_full 2> /dev/null \
+  || cat /sys/class/power_supply/BAT0/charge_full 2> /dev/null)
 get_battery() {
   local _battery=0
   local battery_n=$(cat /sys/class/power_supply/BAT0/energy_now 2> /dev/null \
