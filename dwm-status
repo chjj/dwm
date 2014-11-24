@@ -701,7 +701,7 @@ timer() {
 #
 
 main() {
-  local out interval checked_weather
+  local out interval
 
   # Get a certain value.
   if test "$1" = 'get'; then
@@ -754,14 +754,10 @@ main() {
 
     # timer $((8 * 60 * 60)) get_ip
 
-    timer $((30 * 60)) get_weather
-
-    if test "$weather" = 'Unknown' -a -z "$checked_weather"; then
-      checked_weather=1
-      (
-        sleep 300
-        get_weather
-      ) &
+    if test "$weather" = 'Unknown'; then
+      timer $((5 * 60)) get_weather
+    else
+      timer $((30 * 60)) get_weather
     fi
 
     out=$(
