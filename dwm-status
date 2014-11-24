@@ -199,7 +199,7 @@ get_down() {
   local _down
   local totaldown=0
   local network
-  for network in /sys/class/net/{eth,wlan}*/statistics/rx_bytes; do
+  for network in /sys/class/net/{eth,wlan,wlp2s0}*/statistics/rx_bytes; do
     test ! -e "$network" && continue
     read network < $network
     totaldown=$((totaldown + network))
