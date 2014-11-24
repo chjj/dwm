@@ -86,8 +86,10 @@ get_load() {
 
 mem=
 get_mem() {
-  local cur=$(free -m | grep cache: | awk '{ print $3 }')
-  local max=$(free -m | grep Mem | awk '{ print $2 }')
+  local cur=$(command free -b | grep Mem: | awk '{ print $3 }')
+  local max=$(command free -b | grep Mem: | awk '{ print $2 }')
+  #local cur=$(free -m | grep cache: | awk '{ print $3 }')
+  #local max=$(free -m | grep Mem | awk '{ print $2 }')
   local _mem
   if test "$1" != 'perc'; then
     _mem="$cur/$max"
@@ -125,8 +127,10 @@ get__mem() {
 
 swap=
 get_swap() {
-  local cur=$(free -m | grep Swap | awk '{ print $3 }')
-  local max=$(free -m | grep Swap | awk '{ print $2 }')
+  local cur=$(command free -b | grep Swap: | awk '{ print $3 }')
+  local max=$(command free -b | grep Swap: | awk '{ print $2 }')
+  #local cur=$(free -m | grep Swap | awk '{ print $3 }')
+  #local max=$(free -m | grep Swap | awk '{ print $2 }')
   if test $max -eq 0; then
     ret=0
     swap=0
@@ -218,7 +222,7 @@ get_up() {
   local _up
   local totalup=0
   local network
-  for network in /sys/class/net/{eth,wlan}*/statistics/tx_bytes; do
+  for network in /sys/class/net/{eth,wlan,wlp2s0}*/statistics/tx_bytes; do
     test ! -e "$network" && continue
     read network < $network
     totalup=$((totalup + network))
