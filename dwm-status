@@ -563,6 +563,9 @@ get_battery() {
     ;;
     Discharging)
       status='-'
+      if acpi 2> /dev/null | grep -q 'discharging at zero rate'; then
+        status='F'
+      fi
     ;;
     Unknown | *)
       #status='⌁'
