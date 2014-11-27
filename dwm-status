@@ -551,25 +551,27 @@ get_battery() {
   local status=$(cat /sys/class/power_supply/BAT0/status 2> /dev/null \
     || echo 'Unknown')
   case "$status" in
-    Full)
-      #status='↯'
+    Full | Charged)
+      # status='↯'
       status='F'
-    ;;
-    Charged)
-      #status='↯'
-      status='C'
     ;;
     Charging)
       status='+'
     ;;
     Discharging)
       status='-'
+      # Fix ACPI bug in zenbook ux303 (I love ACPI, almost as much as EFI)
       if acpi 2> /dev/null | grep -q 'discharging at zero rate'; then
-        status='F'
+        if test $_battery -ge 99; then
+          _battery=100
+          status='F'
+        else
+          status='+'
+        fi
       fi
     ;;
     Unknown | *)
-      #status='⌁'
+      # status='⌁'
       status='?'
     ;;
   esac
