@@ -760,7 +760,7 @@ main() {
     if test "$weather" = 'Unknown'; then
       timer $((5 * 60)) get_weather
     else
-      timer $((30 * 60)) get_weather
+      timer $((20 * 60)) get_weather
     fi
 
     out=$(
