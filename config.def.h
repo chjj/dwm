@@ -156,18 +156,23 @@ static const char *transupcmd[]   = { "compton-trans", "-c", "-o", "+10", NULL }
 static const char *transdowncmd[] = { "compton-trans", "-c", "-o", "-10", NULL };
 static const char *transdelcmd[]  = { "compton-trans", "-c", "-d", NULL };
 
+// Toggle with synclient:
 //static const char *touchcmd[]     = { "sh", "-c", "synclient TouchpadOff="
 //	"$(synclient -l | grep -c 'TouchpadOff.*=.*0')"
 //	" && xdotool mousemove 32767 32767",
 //	NULL };
 
-// $ xinput --list-props 13
-// Device 'PS/2 Logitech Wheel Mouse':
-//         Device Enabled (138):   0
-// xinput --set-prop device "Device Enabled" 0
+// Toggle with xinput:
+// Example: xinput --set-prop device "Device Enabled" 0
 static const char *touchcmd[]     = { "sh", "-c", "xinput --set-prop "
 	" $(xinput --list | grep -i 'Mouse' | sed 's/^.*id=\\([0-9]\\+\\).*$/\\1/')"
 	" 'Device Enabled' $(xinput --list-props $(xinput --list | grep -i 'Mouse'"
+	" | sed 's/^.*id=\\([0-9]\\+\\).*$/\\1/') | grep -c 'Device Enabled.*0')"
+	" && xdotool mousemove 32767 32767",
+	NULL };
+static const char *touchscreencmd[]     = { "sh", "-c", "xinput --set-prop "
+	" $(xinput --list | grep -i 'maXTouch Digitizer' | sed 's/^.*id=\\([0-9]\\+\\).*$/\\1/')"
+	" 'Device Enabled' $(xinput --list-props $(xinput --list | grep -i 'maXTouch Digitizer'"
 	" | sed 's/^.*id=\\([0-9]\\+\\).*$/\\1/') | grep -c 'Device Enabled.*0')"
 	" && xdotool mousemove 32767 32767",
 	NULL };
@@ -224,6 +229,7 @@ static Key keys[] = {
 	{ MODKEY,                       XK_c,      center,         {0} },
 	{ MODKEY,                       XK_g,      spawn,          {.v = clipcmd } },
 	{ MODKEY,                       XK_a,      spawn,          {.v = touchcmd } },
+	{ MODKEY|ShiftMask,             XK_a,      spawn,          {.v = touchscreencmd } },
 	{ MODKEY|ShiftMask,             XK_l,      spawn,          {.v = slockcmd } },
 
 	// If togglemaximize is enabled:
