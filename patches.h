@@ -28,4 +28,7 @@
 // Run autostart script
 // Similar patch: http://dwm.suckless.org/patches/autostart
 #define AUTOSTART 0
+
+// Give statusbar some padding
+#define BAR_PADDING 1
 #endif
