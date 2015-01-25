@@ -45,7 +45,7 @@ fi
 
 #
 # Background Color
-# e.g. #000 / black / #222222
+# e.g. black / #333333
 #
 
 bgcolor='#441111'
@@ -453,13 +453,12 @@ _virtualbox() {
 }
 
 _book() {
-  # run xterm -fa 'Deja Vu Sans Mono:pixelsize=20:antialias=true' -e less "$@"
+  # Could use `-fa 'Deja Vu Sans Mono:pixelsize=20:antialias=true'`
   run xterm -font '-*-terminus-medium-*-*-*-24-*-*-*-*-*-*-*' -e less "$@"
 }
 
 _book-html() {
-  # run xterm -fa 'Deja Vu Sans Mono:pixelsize=20:antialias=true' \
-  #   -e w3m -I UTF-8 -T text/html "$@"
+  # Could use `-fa 'Deja Vu Sans Mono:pixelsize=20:antialias=true'`
   run xterm -font '-*-terminus-medium-*-*-*-24-*-*-*-*-*-*-*' \
     -e w3m -I UTF-8 -T text/html "$@"
 }
@@ -473,12 +472,22 @@ _wallpaper() {
   test -z "$file" && file="$wallpaper"
   if test -f "$file"; then
     feh --bg-scale "$file"
+    # feh --bg-full "$file"
+    # hsetroot -fill "$file"
+    # hsetroot -full "$file"
   else
     test -n "$1" && bgcolor="$1"
-    xsetroot -solid "$bgcolor" 2> /dev/null
-    hsetroot -solid "$bgcolor" 2> /dev/null
-    feh --bg-tile \
-      "$HOME/wallpapers/$(echo "$bgcolor" | sed 's/^#//').png" 2> /dev/null
+    xsetroot -solid "$bgcolor"
+    hsetroot -solid "$bgcolor"
+    # mkdir ~/wallpapers
+    # local wp="$HOME/wallpapers/$(echo "$bgcolor" | sed 's/^#//').png"
+    # hsetroot -write "$wp"
+    # feh --bg-tile "$wp"
+    # # feh --bg-scale "$wp"
+    # # feh --bg-full "$wp"
+    # hsetroot -tile "$file"
+    # # hsetroot -fill "$file"
+    # # hsetroot -full "$file"
   fi
 }
 
