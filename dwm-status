@@ -254,7 +254,7 @@ get_ssid() {
 }
 
 _get_ssid_nm() {
-  local con=$(nmcli c show)
+  local con=$(nmcli --nocheck c show)
   if echo "$con" | grep -q '[ \t]vpn[ \t].*[ \t][a-zA-Z0-9]\+[ \t]*$'; then
     echo "$con" \
       | grep '[ \t]vpn[ \t]' \

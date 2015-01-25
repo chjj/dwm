@@ -48,7 +48,7 @@ fi
 # e.g. #000 / black / #222222
 #
 
-bgcolor='#000'
+bgcolor='#333333'
 if test -n "$BG_COLOR"; then
   bgcolor=$BG_COLOR
 fi
@@ -475,7 +475,10 @@ _wallpaper() {
     feh --bg-scale "$file"
   else
     test -n "$1" && bgcolor="$1"
-    xsetroot -solid "$bgcolor"
+    xsetroot -solid "$bgcolor" 2> /dev/null
+    hsetroot -solid "$bgcolor" 2> /dev/null
+    feh --bg-tile \
+      "$HOME/wallpapers/$(echo "$bgcolor" | sed 's/^#//').png" 2> /dev/null
   fi
 }
 
