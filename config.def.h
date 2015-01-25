@@ -62,16 +62,20 @@ static const char font[]            = "-*-terminus-medium-r-*-*-14-*-*-*-*-*-*-*
 // static const char font[]            = "-*-terminus-medium-r-*-*-22-*-*-*-*-*-*-*";
 
 static const char normbordercolor[] = "#222222";
-static const char normbgcolor[]     = "#000000";
+// static const char normbgcolor[]     = "#000000";
+static const char normbgcolor[]     = "#441111";
 static const char normfgcolor[]     = "#666666";
-static const char selbordercolor[]  = "#eeeeee";
-static const char selbgcolor[]      = "#000000";
+// static const char selbordercolor[]  = "#eeeeee";
+static const char selbordercolor[]  = "#ffffff";
+// static const char selbgcolor[]      = "#000000";
+static const char selbgcolor[]      = "#441111";
 static const char selfgcolor[]      = "#eeeeee";
 #if URGENT_BORDER
 static const char urgbordercolor[]  = "#ff0000";
 #endif
 
-static const unsigned int borderpx  = 1;        /* border pixel of windows */
+// static const unsigned int borderpx  = 1;        /* border pixel of windows */
+static const unsigned int borderpx  = 2;        /* border pixel of windows */
 #if USELESS_GAP
 static const unsigned int gappx     = 15;        /* gap pixel between windows */
 #endif
