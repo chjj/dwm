@@ -48,7 +48,7 @@ fi
 # e.g. #000 / black / #222222
 #
 
-bgcolor='#333333'
+bgcolor='#441111'
 if test -n "$BG_COLOR"; then
   bgcolor=$BG_COLOR
 fi
