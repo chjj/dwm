@@ -64,12 +64,11 @@ static const char font[]            = "-*-terminus-medium-r-*-*-14-*-*-*-*-*-*-*
 static const char normbordercolor[] = "#222222";
 // static const char normbgcolor[]     = "#000000";
 static const char normbgcolor[]     = "#441111";
-static const char normfgcolor[]     = "#666666";
-// static const char selbordercolor[]  = "#eeeeee";
+static const char normfgcolor[]     = "#ffffff";
 static const char selbordercolor[]  = "#ffffff";
 // static const char selbgcolor[]      = "#000000";
 static const char selbgcolor[]      = "#441111";
-static const char selfgcolor[]      = "#eeeeee";
+static const char selfgcolor[]      = "#ee5500";
 #if URGENT_BORDER
 static const char urgbordercolor[]  = "#ff0000";
 #endif
