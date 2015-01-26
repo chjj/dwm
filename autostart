@@ -6,5 +6,5 @@ compton --config ~/.compton.conf -b
 # conky | while read -r; do xsetroot -name "$REPLY"; done &
 
 killall dwm-status > /dev/null 2>& 1
-dwm-status 3s &
+dwm-status 3 &
 dwm-start wallpaper
