@@ -472,21 +472,22 @@ _wallpaper() {
   test -z "$file" && file="$wallpaper"
   if test -f "$file"; then
     feh --bg-scale "$file"
-    # feh --bg-full "$file"
-    # hsetroot -fill "$file"
+    # feh --bg-fill "$file"
     # hsetroot -full "$file"
   else
     test -n "$1" && bgcolor="$1"
     xsetroot -solid "$bgcolor"
-    hsetroot -solid "$bgcolor"
+    # hsetroot -solid "$bgcolor"
+    # hsetroot -add "$gradient" -add '#000000' -gradient 0
+    hsetroot -add "$gradient" -add '#110000' -gradient 0
     # mkdir ~/wallpapers
-    # local wp="$HOME/wallpapers/$(echo "$bgcolor" | sed 's/^#//').png"
-    # hsetroot -write "$wp"
-    # feh --bg-tile "$wp"
-    # # feh --bg-scale "$wp"
-    # # feh --bg-full "$wp"
-    # hsetroot -tile "$file"
-    # # hsetroot -fill "$file"
+    # # file="$HOME/wallpapers/$(echo "$bgcolor" | sed 's/^#//').png"
+    # # hsetroot -solid "$bgcolor" -write "$file"
+    # # local file="$HOME/wallpapers/$(echo "$bgcolor" | sed 's/^#//')-gradient.png"
+    # # hsetroot -add "$bgcolor" -add '#000000' -gradient 0 -write "$file"
+    # local file="$HOME/wallpapers/$(echo "$bgcolor" | sed 's/^#//')-light-gradient.png"
+    # hsetroot -add "$bgcolor" -add '#110000' -gradient 0 -write "$file"
+    # feh --bg-scale "$file"
     # # hsetroot -full "$file"
   fi
 }
