@@ -1202,14 +1202,6 @@ manage(Window w, XWindowAttributes *wa) {
 	arrange(c->mon);
 	XMapWindow(dpy, c->win);
 	focus(NULL);
-
-#if FIX_MPLAYER
-	/* fix the mplayer border */
-	if (c->isfloating) {
-		int i = 5;
-		while (i--) focus(c);
-	}
-#endif
 }
 
 void
