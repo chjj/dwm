@@ -24,8 +24,11 @@
 
 // Run autostart script
 // Similar patch: http://dwm.suckless.org/patches/autostart
-#define AUTOSTART 0
+#define AUTOSTART 1
 
 // Give statusbar some padding
-#define BAR_PADDING 1
+#define BAR_PADDING 8
+
+// Are we using our gradient background?
+#define USE_GRADIENT 1
 #endif

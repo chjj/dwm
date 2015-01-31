@@ -1649,10 +1649,7 @@ setup(void) {
 	initfont(font);
 	sw = DisplayWidth(dpy, screen);
 	sh = DisplayHeight(dpy, screen);
-	bh = dc.h = dc.font.height + 2;
-#if BAR_PADDING
-	bh = dc.h = dc.font.height + 2 + 8;
-#endif
+	bh = dc.h = dc.font.height + 2 + BAR_PADDING;
 	updategeom();
 	/* init atoms */
 	wmatom[WMProtocols] = XInternAtom(dpy, "WM_PROTOCOLS", False);

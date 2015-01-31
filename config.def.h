@@ -5,35 +5,6 @@
 // urgentborder, focusurgent (custom), center (custom), restart (custom)
 // moveresize, fixmplayer (custom), autostart (custom)
 
-// TODO:
-// mod4+n/mod4+shift+n - minimize/restore windows
-// mod4+n - minimize window
-// mod4+m - toggle maximize - equivalent of XK_m+XK_t
-// mod4+f - toggle fullscreen
-// autorun, feh, set bg - http://dwm.suckless.org/patches/autostart
-// have new windows become slaves instead of masters:
-//   http://dwm.suckless.org/patches/attachaside
-// keyboard moving/resizing - http://dwm.suckless.org/patches/moveresize
-//   another: http://dwm.suckless.org/patches/maximize
-//   better: http://dwm.suckless.org/patches/exresize
-// attach aside - http://dwm.suckless.org/patches/attachaside
-// attach above current client - http://dwm.suckless.org/patches/attachabove
-// full taskbar - http://dwm.suckless.org/patches/fancybar
-//   see also: http://dwm.suckless.org/patches/fancycoloredbarclickable
-// Built-in launcher:
-// https://bbs.archlinux.org/viewtopic.php?pid=874763#p874763
-// Systray
-// https://bbs.archlinux.org/viewtopic.php?pid=874768#p874768
-// http://dwm.suckless.org/patches/systray
-// Status Colors
-// http://dwm.suckless.org/patches/statuscolors
-// Statusbar written in C
-// http://dwm.suckless.org/dwmstatus/
-
-// NOTE: Unused mod4 key combinations:
-// e, n, o, q, s, x, y, z, slash, bracketleft, bracketright,
-// semicolon, apostrophe, backslash, minus, equal, grave, Escape
-
 // http://dwm.suckless.org/patches/movestack
 // http://dwm.suckless.org/patches/movestack-5.8.2.diff
 // alternative: http://dwm.suckless.org/patches/push
@@ -62,21 +33,20 @@ static const char font[]            = "-*-terminus-medium-r-*-*-14-*-*-*-*-*-*-*
 // static const char font[]            = "-*-terminus-medium-r-*-*-22-*-*-*-*-*-*-*";
 
 static const char normbordercolor[] = "#222222";
-// static const char normbgcolor[]     = "#000000";
 static const char normbgcolor[]     = "#441111";
 static const char normfgcolor[]     = "#ffffff";
 static const char selbordercolor[]  = "#ffffff";
-// static const char selbgcolor[]      = "#000000";
 static const char selbgcolor[]      = "#441111";
 static const char selfgcolor[]      = "#ee5500";
 #if URGENT_BORDER
 static const char urgbordercolor[]  = "#ff0000";
 #endif
+static const char dmenubgcolor[]    = "#110000";
 
-// static const unsigned int borderpx  = 1;        /* border pixel of windows */
 static const unsigned int borderpx  = 2;        /* border pixel of windows */
 #if USELESS_GAP
-static const unsigned int gappx     = 15;        /* gap pixel between windows */
+//static const unsigned int gappx     = 15;        /* gap pixel between windows */
+static const unsigned int gappx     = 18;        /* gap pixel between windows */
 #endif
 static const unsigned int snap      = 32;       /* snap pixel */
 static const Bool showbar           = True;     /* False means no bar */
@@ -129,8 +99,6 @@ static const Layout layouts[] = {
 
 /* key definitions */
 #define MODKEY Mod4Mask
-// #define MODKEY Mod1Mask
-// #define MODKEY (Mod1Mask|ShiftMask)
 #define TAGKEYS(KEY,TAG) \
 	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
 	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
@@ -141,7 +109,11 @@ static const Layout layouts[] = {
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
 
 /* commands */
-static const char *dmenucmd[] = { "dmenu_run", "-fn", font, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbgcolor, "-sf", selfgcolor, NULL };
+#if !USE_GRADIENT
+static const char *dmenucmd[] = { "dmenu_run", "-b", "-p", ">", "-fn", font, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbgcolor, "-sf", selfgcolor, NULL };
+#else
+static const char *dmenucmd[] = { "dmenu_run", "-b", "-p", ">", "-fn", font, "-nb", dmenubgcolor, "-nf", normfgcolor, "-sb", dmenubgcolor, "-sf", selfgcolor, NULL };
+#endif
 static const char *termcmd[]  = { "xterm", "-name", "tmux", "-T", "tmux", "-e", "tmux", NULL };
 
 // Custom:
@@ -151,20 +123,21 @@ static const char *voltogglecmd[] = { "amixer", "set", "Master", "toggle", NULL 
 static const char *captogglecmd[] = { "amixer", "set", "Capture", "toggle", NULL };
 static const char *pastecmd[]     = { "sh", "-c", "sleep 0.5 && xdotool type --delay 0ms \"$(xsel -o -p)\"", NULL };
 static const char *scrotcmd[]     = { "scrot", "-e", "mv $f ~/screenshots", NULL };
+#if !USE_GRADIENT
 static const char *startcmd[]     = { "dwm-start", "menu", "-b", "-p", ">",
                                       "-fn", font, "-nb", normbgcolor,
                                       "-nf", normfgcolor, "-sb", selbgcolor,
                                       "-sf", selfgcolor, NULL };
+#else
+static const char *startcmd[]     = { "dwm-start", "menu", "-b", "-p", ">",
+                                      "-fn", font, "-nb", dmenubgcolor,
+                                      "-nf", normfgcolor, "-sb", dmenubgcolor,
+                                      "-sf", selfgcolor, NULL };
+#endif
 static const char *clipcmd[]      = { "sh", "-c", "xsel -c -p && xsel -c -s && xsel -c -b", NULL };
 static const char *transupcmd[]   = { "compton-trans", "-c", "-o", "+10", NULL };
 static const char *transdowncmd[] = { "compton-trans", "-c", "-o", "-10", NULL };
 static const char *transdelcmd[]  = { "compton-trans", "-c", "-d", NULL };
-
-// Toggle with synclient:
-//static const char *touchcmd[]     = { "sh", "-c", "synclient TouchpadOff="
-//	"$(synclient -l | grep -c 'TouchpadOff.*=.*0')"
-//	" && xdotool mousemove 32767 32767",
-//	NULL };
 
 // Toggle with xinput:
 // Example: xinput --set-prop device "Device Enabled" 0

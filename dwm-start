@@ -454,6 +454,7 @@ _virtualbox() {
 
 _book() {
   # Could use `-fa 'Deja Vu Sans Mono:pixelsize=20:antialias=true'`
+  # run xterm -font '-*-terminus-medium-*-*-*-24-*-*-*-*-*-*-*' -e vim -c ':set ro' "$@"
   run xterm -font '-*-terminus-medium-*-*-*-24-*-*-*-*-*-*-*' -e less "$@"
 }
 
@@ -472,20 +473,16 @@ _wallpaper() {
   test -z "$file" && file="$wallpaper"
   if test -f "$file"; then
     feh --bg-scale "$file"
-    # feh --bg-fill "$file"
     # hsetroot -full "$file"
   else
     test -n "$1" && bgcolor="$1"
     xsetroot -solid "$bgcolor"
     # hsetroot -solid "$bgcolor"
-    # hsetroot -add "$gradient" -add '#000000' -gradient 0
-    hsetroot -add "$gradient" -add '#110000' -gradient 0
+    hsetroot -add "$bgcolor" -add '#110000' -gradient 0
     # mkdir ~/wallpapers
     # # file="$HOME/wallpapers/$(echo "$bgcolor" | sed 's/^#//').png"
     # # hsetroot -solid "$bgcolor" -write "$file"
-    # # local file="$HOME/wallpapers/$(echo "$bgcolor" | sed 's/^#//')-gradient.png"
-    # # hsetroot -add "$bgcolor" -add '#000000' -gradient 0 -write "$file"
-    # local file="$HOME/wallpapers/$(echo "$bgcolor" | sed 's/^#//')-light-gradient.png"
+    # local file="$HOME/wallpapers/$(echo "$bgcolor" | sed 's/^#//')-gradient.png"
     # hsetroot -add "$bgcolor" -add '#110000' -gradient 0 -write "$file"
     # feh --bg-scale "$file"
     # # hsetroot -full "$file"
