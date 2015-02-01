@@ -70,7 +70,7 @@ static const Rule rules[] = {
 	{ "XTerm",    "qemu-term", NULL,      0,            True,        -1 },
 	{ "MPlayer",  NULL,       NULL,       0,            True,        -1 },
 	{ "mpv",      NULL,       NULL,       0,            True,        -1 },
-	{ "vncviewer",NULL,       NULL,       0,            True,        -1 },
+	{ "Vncviewer",NULL,       NULL,       0,            True,        -1 },
 	{ "Skype",    NULL,       NULL,       0,            False,       -1 },
 	{ "XClock",   NULL,       NULL,       0,            True,        -1 },
 	{ "feh",      NULL,       NULL,       0,            True,        -1 },
