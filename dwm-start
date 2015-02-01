@@ -396,6 +396,22 @@ __qemu-index() {
   test -n "$index" && echo "$index"
 }
 
+_vnc() {
+  _stop-vnc > /dev/null
+  sleep 2
+  . ~/.ssh/environment > /dev/null 2>& 1
+  ssh -fTNL 4900:127.0.0.1:5900 "$@"
+  sleep 3
+  run vncviewer -passwd ~/.vnc/passwd localhost:4900
+}
+
+_vnc-stop() {
+  killall vncviewer 2> /dev/null
+  ps aux | grep 'ssh -fTNL' \
+    | grep -v grep | head -n 1 \
+    | awk '{ print $2 }' | xargs kill 2> /dev/null
+}
+
 _skype() {
   # run start-skype "$@"
   _qemu -localtime ~/.qemu/windows7.qcow2
