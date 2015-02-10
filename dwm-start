@@ -208,7 +208,7 @@ _chrome() {
   # https://code.google.com/p/chromium/issues/detail?id=265810
   # https://code.google.com/p/chromium/issues/detail?id=306654
   # http://www.chromium.org/developers/design-documents/network-stack/socks-proxy
-  # https://www.google.com/search?q=chrome+socks+proxy&gbv=1&sei=HYLtU-roEqrX8AGyiYCIDg
+  # https://www.google.com/search?q=chrome+socks+proxy
 
   # --ignore-urlfetcher-cert-requests
   # --extensions-on-chrome-urls
@@ -218,7 +218,7 @@ _chrome() {
   # --enable-experimental-extension-apis
   # --extensions-not-webstore
   # --show-component-extension-options
-  # --force-app-mode ⊗
+  # --force-app-mode
   # --no-sandbox
   # --single-process
   # --disable-web-security - no CORS
