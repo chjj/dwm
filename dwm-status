@@ -571,7 +571,7 @@ get_battery() {
       status='-'
       # Fix ACPI bug in zenbook ux303 (I love ACPI, almost as much as EFI)
       if acpi 2> /dev/null | grep -q 'discharging at zero rate'; then
-        if test $_battery -ge 95; then
+        if test $_battery -ge 90; then
           _battery=100
           status='F'
         else
