@@ -68,6 +68,7 @@ static const Rule rules[] = {
 	/* class      instance    title       tags mask     isfloating   monitor */
 	{ "qemu-system-x86_64", NULL, NULL,   0,            True,        -1 },
 	{ "XTerm",    "qemu-term", NULL,      0,            True,        -1 },
+	{ "URxvt",    "qemu-term", NULL,      0,            True,        -1 },
 	{ "MPlayer",  NULL,       NULL,       0,            True,        -1 },
 	{ "mpv",      NULL,       NULL,       0,            True,        -1 },
 	{ "Vncviewer",NULL,       NULL,       0,            True,        -1 },
@@ -115,7 +116,7 @@ static const char *dmenucmd[] = { "dmenu_run", "-b", "-p", ">", "-fn", font, "-n
 #else
 static const char *dmenucmd[] = { "dmenu_run", "-b", "-p", ">", "-fn", font, "-nb", dmenubgcolor, "-nf", normfgcolor, "-sb", dmenubgcolor, "-sf", selfgcolor, NULL };
 #endif
-static const char *termcmd[]  = { "xterm", "-name", "tmux", "-T", "tmux", "-e", "tmux", NULL };
+static const char *termcmd[]  = { "urxvt", "-name", "tmux", "-T", "tmux", "-e", "tmux", NULL };
 
 // Custom:
 static const char *voldowncmd[]   = { "amixer", "set", "Master", "5%-", NULL };
@@ -140,14 +141,18 @@ static const char *transupcmd[]   = { "compton-trans", "-c", "-o", "+10", NULL }
 static const char *transdowncmd[] = { "compton-trans", "-c", "-o", "-10", NULL };
 static const char *transdelcmd[]  = { "compton-trans", "-c", "-d", NULL };
 
-// Toggle with xinput:
-// Example: xinput --set-prop device "Device Enabled" 0
-static const char *touchcmd[]     = { "sh", "-c", "xinput --set-prop "
-	" $(xinput --list | grep -i 'Mouse' | sed 's/^.*id=\\([0-9]\\+\\).*$/\\1/')"
-	" 'Device Enabled' $(xinput --list-props $(xinput --list | grep -i 'Mouse'"
-	" | sed 's/^.*id=\\([0-9]\\+\\).*$/\\1/') | grep -c 'Device Enabled.*0')"
+static const char *touchcmd[]     = { "sh", "-c", "synclient "
+	" TouchpadOff=$(synclient -l | grep -c 'TouchpadOff.*=.*0')"
 	" && xdotool mousemove 32767 32767",
 	NULL };
+// Toggle with xinput:
+// Example: xinput --set-prop device "Device Enabled" 0
+// static const char *touchcmd[]     = { "sh", "-c", "xinput --set-prop "
+// 	" $(xinput --list | grep -i 'Mouse' | sed 's/^.*id=\\([0-9]\\+\\).*$/\\1/')"
+// 	" 'Device Enabled' $(xinput --list-props $(xinput --list | grep -i 'Mouse'"
+// 	" | sed 's/^.*id=\\([0-9]\\+\\).*$/\\1/') | grep -c 'Device Enabled.*0')"
+// 	" && xdotool mousemove 32767 32767",
+// 	NULL };
 static const char *touchscreencmd[]     = { "sh", "-c", "xinput --set-prop "
 	" $(xinput --list | grep -i 'maXTouch Digitizer' | sed 's/^.*id=\\([0-9]\\+\\).*$/\\1/')"
 	" 'Device Enabled' $(xinput --list-props $(xinput --list | grep -i 'maXTouch Digitizer'"

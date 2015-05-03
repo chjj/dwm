@@ -17,7 +17,7 @@ background=1
 # Terminal
 #
 
-terminal='xterm'
+terminal='urxvt'
 if test -n "$(which x-terminal-emulator 2> /dev/null)"; then
   terminal=$(readlink -f "$(which x-terminal-emulator)" | xargs basename)
 fi
@@ -188,8 +188,8 @@ _mutt() {
 
 _ssh() {
   run "$terminal" -name ssh -T ssh -e tmux \
-    new "env TERM=xterm-256color ssh $@" \; \
-    set default-terminal xterm-256color \; \
+    new "env TERM=rxvt-unicode-256color ssh $@" \; \
+    set default-terminal rxvt-unicode-256color \; \
     set status off
 }
 
@@ -470,13 +470,13 @@ _virtualbox() {
 
 _book() {
   # Could use `-fa 'Deja Vu Sans Mono:pixelsize=20:antialias=true'`
-  # run xterm -font '-*-terminus-medium-*-*-*-24-*-*-*-*-*-*-*' -e vim -c ':set ro' "$@"
-  run xterm -font '-*-terminus-medium-*-*-*-24-*-*-*-*-*-*-*' -e less "$@"
+  # run urxvt -font '-*-terminus-medium-*-*-*-24-*-*-*-*-*-*-*' -e vim -c ':set ro' "$@"
+  run urxvt -font '-*-terminus-medium-*-*-*-24-*-*-*-*-*-*-*' -e less "$@"
 }
 
 _book-html() {
   # Could use `-fa 'Deja Vu Sans Mono:pixelsize=20:antialias=true'`
-  run xterm -font '-*-terminus-medium-*-*-*-24-*-*-*-*-*-*-*' \
+  run urxvt -font '-*-terminus-medium-*-*-*-24-*-*-*-*-*-*-*' \
     -e w3m -I UTF-8 -T text/html "$@"
 }
 

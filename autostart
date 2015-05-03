@@ -1,7 +1,7 @@
 #!/bin/bash
 
-compton --config ~/.compton.conf -b
-# compton --config /dev/null --backend glx --vsync opengl-swc -b
+# compton --config ~/.compton.conf -b
+compton --config /dev/null --backend glx --vsync opengl-swc -b
 
 # conky | while read -r; do xsetroot -name "$REPLY"; done &
 
