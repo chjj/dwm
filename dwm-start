@@ -104,12 +104,14 @@ cleanup() {
 
 _autorun() {
   background=1
-  pidof irssi > /dev/null 2>& 1 && return 1
+  # pidof irssi > /dev/null 2>& 1 && return 1
+  pidof weechat > /dev/null 2>& 1 && return 1
   _wallpaper
   _tmux
   _mutt
   _ncmpcpp
-  _irssi
+  # _irssi
+  _weechat
   _vim
   _dwb
 }
@@ -175,8 +177,36 @@ _irssi-disconnect() {
 }
 
 _weechat() {
+  __weechat-server
+}
+
+_weechat-local() {
   run "$terminal" -name weechat -T weechat -e tmux new "weechat $@" \; set status off
 }
+
+__weechat-server() {
+  local server='system76.public'
+  if test -e ~/.ssh/environment; then
+    . ~/.ssh/environment > /dev/null 2>& 1
+    server=$(ssh -o ConnectTimeout=4 system76 'echo system76' 2> /dev/null || \
+      ssh -o ConnectTimeout=8 system76.public 'echo system76.public' 2> /dev/null)
+  fi
+  run "$terminal" -name weechat -T weechat -e tmux new \
+    "bash -i -c 'exec ssh -t $server exec\\ bash\\ -i\\ -c\\ weechat-start'" \
+    \; set status off
+}
+
+_weechat-disconnect() {
+  ps aux \
+    | grep '[^co] ssh.*weechat-start' \
+    | grep -v grep \
+    | awk '{ print $2 }' \
+    | xargs kill
+}
+
+# _weechat() {
+#   run "$terminal" -name weechat -T weechat -e tmux new "weechat $@" \; set status off
+# }
 
 _vim() {
   run "$terminal" -name vim -T vim -e tmux new "vim $@" \; set status off
@@ -249,6 +279,8 @@ _chrome() {
     if test "$1" = '-i'; then
       args[i++]='--incognito'
     elif test "$1" = '-p'; then
+      # test -z "$SOCKS_PORT" && SOCKS_PORT=1080
+      # args[i++]="--proxy-server=socks5://localhost:${SOCKS_PORT}"
       args[i++]='--proxy-server=socks5://localhost:1080'
       args[i++]='--host-resolver-rules=MAP * 0.0.0.0 , EXCLUDE localhost'
     else
@@ -292,7 +324,7 @@ _qemu() {
   #    return 0
   #  fi
 
-  QEMU_AUDIO_DRV=alsa \
+  QEMU_AUDIO_DRV=pulse \
   SDL_VIDEO_X11_DGAMOUSE=0 \
   run qemu-system-x86_64 \
     -usbdevice tablet \

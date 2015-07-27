@@ -470,7 +470,7 @@ get_addr() {
   if test -n "$1"; then
     _addr=$(ip -f inet addr show "$1" | tail -n 1 | awk '{ print $2 }')
   else
-    _addr=$(ip addr | grep -m 1 'inet.*\(eth0\|wlan0\)' | awk '{ print $2 }')
+    _addr=$(ip addr | grep -m 1 'inet.*\(eth0\|wlan0\|enp0s\)' | awk '{ print $2 }')
   fi
   ret=$_addr
   addr=$_addr
