@@ -10,7 +10,7 @@
 # Constants
 #
 
-useragent='Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/34.0.1771.0 Safari/537.36'
+useragent='Mozilla/5.0'
 
 #
 # Global Return Value
